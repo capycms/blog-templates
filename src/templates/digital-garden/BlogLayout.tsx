@@ -14,9 +14,30 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
       <main className="max-w-5xl mx-auto px-6 py-8 flex gap-8">
         
           <aside className="w-64 shrink-0 hidden lg:block">
-            <div className="sticky top-8 bg-white border-emerald-200 border rounded-lg p-4">
-              <h3 className="font-serif font-bold mb-2">About</h3>
-              <p className="text-sm opacity-70">Digital Garden template</p>
+            <div className="sticky top-8 bg-white border-emerald-200 border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest text-emerald-600">Connections</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded-full border border-emerald-200">react</span>
+                  <span className="text-xs px-2 py-1 rounded-full border border-emerald-200">nextjs</span>
+                  <span className="text-xs px-2 py-1 rounded-full border border-emerald-200">tools</span>
+                </div>
+              </div>
+              <div className="border-t border-emerald-200 p-4">
+                <p className="text-xs uppercase tracking-widest text-emerald-600">Explore</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/digital-garden/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/digital-garden/essential-libraries" className="hover:underline">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </aside><div className="flex-1 min-w-0">{children}</div>
       </main>

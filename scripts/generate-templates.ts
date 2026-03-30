@@ -89,7 +89,7 @@ const templates: TemplateDef[] = [
   { id: "stream-thoughts", name: "Stream Thoughts", category: "personal", bgClass: "bg-purple-50", textClass: "text-purple-800", accentClass: "text-purple-500", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-white", borderClass: "border-purple-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "stream", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "portfolio-journal", name: "Portfolio Journal", category: "personal", bgClass: "bg-amber-50", textClass: "text-amber-900", accentClass: "text-amber-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-amber-200", layout: "sidebar-left", maxWidth: "max-w-5xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "indie-maker", name: "Indie Maker", category: "personal", bgClass: "bg-sky-50", textClass: "text-sky-900", accentClass: "text-sky-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-sky-200", layout: "sidebar-left", maxWidth: "max-w-5xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: true, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
-  { id: "notebook-analog", name: "Notebook Analog", category: "personal", bgClass: "bg-yellow-50", textClass: "text-yellow-900", accentClass: "text-yellow-700", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-yellow-50", borderClass: "border-yellow-300", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "notebook-analog", name: "Notebook Analog", category: "personal", bgClass: "bg-yellow-50 bg-[linear-gradient(rgba(0,0,0,0.04)_1px,transparent_1px)] [background-size:100%_28px]", textClass: "text-yellow-900", accentClass: "text-yellow-700", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-yellow-50", borderClass: "border-yellow-300 border-dashed", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "digital-garden", name: "Digital Garden", category: "personal", bgClass: "bg-emerald-50", textClass: "text-emerald-900", accentClass: "text-emerald-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-emerald-200", layout: "sidebar-left", maxWidth: "max-w-5xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: true },
   { id: "micro-personal", name: "Micro Personal", category: "personal", bgClass: "bg-pink-50", textClass: "text-pink-900", accentClass: "text-pink-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-pink-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "timeline", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
 ];
@@ -368,6 +368,94 @@ function generateLayout(t: TemplateDef): string {
             </div>
           </aside>`;
 
+  const portfolioJournalSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Portfolio</p>
+                <p className="mt-2 text-sm opacity-70">A small collection of work and writing.</p>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Projects</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li><span className="opacity-80">Project Alpha</span></li>
+                  <li><span className="opacity-80">Project Beta</span></li>
+                  <li><span className="opacity-80">Project Gamma</span></li>
+                </ul>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Writing</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/vite-vs-nextjs" className="hover:underline">
+                      Vite vs Next.js
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>`;
+
+  const indieMakerSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Now</p>
+                <p className="mt-2 text-sm opacity-70">Building small tools, shipping weekly.</p>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Projects</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li><span className="opacity-80">Side Project A</span></li>
+                  <li><span className="opacity-80">Side Project B</span></li>
+                  <li><span className="opacity-80">Side Project C</span></li>
+                </ul>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Links</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li><a href="#" className="hover:underline">Twitter</a></li>
+                  <li><a href="#" className="hover:underline">GitHub</a></li>
+                  <li><a href="#" className="hover:underline">Newsletter</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>`;
+
+  const digitalGardenSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Connections</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">react</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">nextjs</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">tools</span>
+                </div>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Explore</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>`;
+
   const sidebarContent =
     t.id === "newspaper-classic"
       ? newspaperSidebarContent
@@ -383,6 +471,12 @@ function generateLayout(t: TemplateDef): string {
                 ? industryInsightsSidebarContent
                 : t.id === "cozy-blog"
                   ? cozyBlogSidebarContent
+                  : t.id === "portfolio-journal"
+                    ? portfolioJournalSidebarContent
+                    : t.id === "indie-maker"
+                      ? indieMakerSidebarContent
+                      : t.id === "digital-garden"
+                        ? digitalGardenSidebarContent
         : defaultSidebarContent;
 
   const centeredChildren =
@@ -1178,6 +1272,35 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
             </a>
           );
         })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "micro-personal") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-6">Micro</h1>
+      <div className="relative border-l ${t.borderClass} ml-3 space-y-4 pl-6">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group relative"
+          >
+            <div className="absolute -left-7 top-2 w-2.5 h-2.5 rounded-full ${t.bgClass} border ${t.borderClass}" />
+            <div className="text-xs opacity-60">{post.frontmatter.date}</div>
+            <div className="${t.headingFont} font-bold group-hover:underline">
+              {post.frontmatter.title}
+            </div>
+            <div className="text-sm opacity-70">{post.frontmatter.excerpt}</div>
+          </a>
+        ))}
       </div>
     </div>
   );
