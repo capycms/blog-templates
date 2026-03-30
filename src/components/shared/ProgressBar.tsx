@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-export function ProgressBar() {
+export function ProgressBar({
+  barClassName = "bg-blue-500",
+}: {
+  barClassName?: string;
+}) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -17,7 +21,7 @@ export function ProgressBar() {
   return (
     <div className="fixed top-0 left-0 w-full h-1 bg-transparent z-50">
       <div
-        className="h-full bg-blue-500 transition-all duration-150"
+        className={`h-full ${barClassName} transition-all duration-150`}
         style={{ width: `${progress}%` }}
       />
     </div>

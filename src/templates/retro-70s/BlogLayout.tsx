@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-yellow-100 text-orange-900 min-h-screen">
-      
       <header className="border-b border-orange-300 bg-yellow-50/80 backdrop-blur">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-serif text-xl font-bold text-orange-600">Retro 70s</a>

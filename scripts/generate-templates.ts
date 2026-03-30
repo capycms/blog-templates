@@ -56,8 +56,8 @@ const templates: TemplateDef[] = [
   { id: "github-wiki", name: "GitHub Wiki", category: "developer", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-blue-600", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-gray-50", borderClass: "border-gray-300", layout: "sidebar-left", maxWidth: "max-w-6xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
   { id: "hacker-neon", name: "Hacker Neon", category: "developer", bgClass: "bg-black", textClass: "text-cyan-300", accentClass: "text-fuchsia-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-950", borderClass: "border-cyan-800", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "code-blog", name: "Code Blog", category: "developer", bgClass: "bg-gray-900", textClass: "text-gray-200", accentClass: "text-yellow-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-800", borderClass: "border-gray-700", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
-  { id: "api-doc-style", name: "API Doc Style", category: "developer", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-blue-500", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-gray-50", borderClass: "border-gray-200", layout: "sidebar-left", maxWidth: "max-w-6xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
-  { id: "retro-terminal", name: "Retro Terminal", category: "developer", bgClass: "bg-black", textClass: "text-green-500", accentClass: "text-green-300", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-black", borderClass: "border-green-900", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "api-doc-style", name: "API Doc Style", category: "developer", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-blue-500", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-gray-50", borderClass: "border-gray-200", layout: "full-width", maxWidth: "max-w-6xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
+  { id: "retro-terminal", name: "Retro Terminal", category: "developer", bgClass: "bg-black bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px)] [background-size:100%_4px]", textClass: "text-green-500", accentClass: "text-green-300", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-black", borderClass: "border-green-900", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "dark-minimal-code", name: "Dark Minimal Code", category: "developer", bgClass: "bg-gray-950", textClass: "text-gray-300", accentClass: "text-violet-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-900", borderClass: "border-gray-800", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: true, showToc: false, showRelated: false },
   { id: "rust-inspired", name: "Rust Inspired", category: "developer", bgClass: "bg-orange-950", textClass: "text-orange-100", accentClass: "text-orange-400", headingFont: "font-serif", bodyFont: "font-mono", cardBg: "bg-orange-900", borderClass: "border-orange-700", layout: "sidebar-right", maxWidth: "max-w-5xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
 
@@ -219,12 +219,52 @@ function generateLayout(t: TemplateDef): string {
             </div>
           </aside>`;
 
+  const rustInspiredSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Docs</p>
+                <h3 className="${t.headingFont} font-bold mt-2">Topics</h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass} text-orange-100/80">Ownership</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass} text-orange-100/80">Borrowing</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass} text-orange-100/80">Lifetimes</span>
+                </div>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Read next</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline text-orange-100/80">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline text-orange-100/80">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>`;
+
   const sidebarContent =
     t.id === "newspaper-classic"
       ? newspaperSidebarContent
       : t.id === "publication-dark"
         ? publicationDarkSidebarContent
+        : t.id === "rust-inspired"
+          ? rustInspiredSidebarContent
         : defaultSidebarContent;
+
+  const centeredChildren =
+    t.id === "dark-minimal-code"
+      ? `<div className="relative pl-6">
+          <div className="absolute left-0 top-0 bottom-0 w-px bg-violet-400/30" />
+          {children}
+        </div>`
+      : "{children}";
 
   let mainContent: string;
   if (t.layout === "sidebar-right") {
@@ -238,14 +278,13 @@ function generateLayout(t: TemplateDef): string {
         ${sidebarContent}<div className="flex-1 min-w-0">{children}</div>
       </main>`;
   } else {
-    mainContent = `\n      <main className="${t.maxWidth} mx-auto px-6 py-8">{children}</main>`;
+    mainContent = `\n      <main className="${t.maxWidth} mx-auto px-6 py-8">${centeredChildren}</main>`;
   }
 
   return `
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="${t.bgClass} ${t.textClass} min-h-screen">
-      ${t.showProgressBar ? '<div className="fixed top-0 left-0 w-full h-1 bg-transparent z-50"><div className="h-full bg-current w-0" /></div>' : ""}
       <header className="border-b ${t.borderClass} ${t.cardBg === "bg-transparent" ? "bg-transparent" : t.cardBg.includes("/") ? t.cardBg : t.cardBg + "/80"} backdrop-blur">
         <div className="${t.maxWidth} mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="${t.headingFont} text-xl font-bold ${t.accentClass}">${t.name}</a>
@@ -267,6 +306,54 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 }
 
 function generateArticleList(t: TemplateDef): string {
+  if (t.id === "rainbow-cards") {
+    return `import { Post } from "@/lib/types";
+import { TagList } from "@/components/shared/TagList";
+
+const cardColors = [
+  "bg-pink-50",
+  "bg-amber-50",
+  "bg-sky-50",
+  "bg-emerald-50",
+  "bg-purple-50",
+];
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post, i) => {
+          const bg = cardColors[i % cardColors.length];
+          return (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className={
+                "block group rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow " +
+                bg
+              }
+            >
+              <div className="p-5">
+                <p className="text-xs opacity-60">{post.frontmatter.date}</p>
+                <h2 className="${t.headingFont} text-xl font-bold mt-1 group-hover:underline">
+                  {post.frontmatter.title}
+                </h2>
+                <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>
+                <div className="mt-3">
+                  <TagList tags={post.frontmatter.tags} />
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
   if (t.id === "timeline-digest") {
     return `import { Post } from "@/lib/types";
 
@@ -777,6 +864,42 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
 }
 
 function generateArticlePage(t: TemplateDef): string {
+  if (t.id === "api-doc-style") {
+    return `import { Post } from "@/lib/types";
+import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";
+import { getTableOfContents } from "@/lib/toc";
+import { TableOfContents } from "@/components/shared/TableOfContents";
+
+export default function ArticlePage({ post }: { post: Post }) {
+  const toc = getTableOfContents(post.content);
+
+  return (
+    <div className="flex gap-8">
+      <aside className="hidden lg:block w-64 shrink-0">
+        <div className="sticky top-8">
+          <TableOfContents items={toc} variant="light" />
+        </div>
+      </aside>
+      <article className="min-w-0 flex-1">
+        <h1 className="${t.headingFont} text-4xl font-bold mb-4">{post.frontmatter.title}</h1>
+        <div className="flex items-center gap-3 text-sm opacity-60 mb-8">
+          <span>{post.frontmatter.date}</span>
+          <span>&middot;</span>
+          <span>{post.frontmatter.author}</span>
+        </div>
+        <div className="lg:hidden">
+          <TableOfContents items={toc} variant="light" />
+        </div>
+        <div className="prose max-w-none ${t.bodyFont}">
+          <MarkdownRenderer source={post.content} variant="wiki" />
+        </div>
+      </article>
+    </div>
+  );
+}
+`;
+  }
+
   const imports: string[] = [
     'import { Post } from "@/lib/types";',
     'import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";',
@@ -810,7 +933,7 @@ function generateArticlePage(t: TemplateDef): string {
               : "light";
   const authorBioVariant = t.id === "silent-elegance" ? "elegant" : t.hasDarkBg ? "dark" : "light";
   const relatedVariant = t.hasDarkBg ? "dark" : "light";
-  const showComplexity = t.id === "code-blog";
+  const progressBarProps = t.id === "dark-minimal-code" ? ' barClassName="bg-violet-400"' : "";
 
   return `${imports.join("\n")}
 
@@ -820,7 +943,7 @@ export default function ArticlePage({ post }: { post: Post }) {
   ${t.id === "code-blog" ? "const complexity = (() => {\n    const fence = String.fromCharCode(96).repeat(3);\n    const fences = post.content.split(fence).length - 1;\n    const codeBlocks = Math.floor(fences / 2);\n    const score = codeBlocks * 2 + Math.round(post.content.length / 1200);\n    if (score <= 3) return \"Low\";\n    if (score <= 6) return \"Medium\";\n    return \"High\";\n  })();\n\n  " : ""}
   return (
     <div>
-      <article>${t.showProgressBar ? "\n              <ProgressBar />" : ""}${t.showBreadcrumbs ? '\n              <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles", href: "/" }, { label: post.frontmatter.title }]} />' : ""}
+      <article>${t.showProgressBar ? `\n              <ProgressBar${progressBarProps} />` : ""}${t.showBreadcrumbs ? '\n              <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles", href: "/" }, { label: post.frontmatter.title }]} />' : ""}
               ${showFeaturedImage ? `
               {post.frontmatter.coverImage ? (
                 <div className="mb-8 aspect-video overflow-hidden rounded-lg border ${t.borderClass}">

@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-gray-50 text-gray-800 min-h-screen">
-      
       <header className="border-b border-gray-100 bg-white/80 backdrop-blur">
         <div className="max-w-xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-sans text-xl font-bold text-blue-500">One Column Light</a>

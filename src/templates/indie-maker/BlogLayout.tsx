@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-sky-50 text-sky-900 min-h-screen">
-      
       <header className="border-b border-sky-200 bg-white/80 backdrop-blur">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-sans text-xl font-bold text-sky-500">Indie Maker</a>

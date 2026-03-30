@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-gradient-to-br from-pink-100 to-sky-100 text-gray-900 min-h-screen">
-      
       <header className="border-b border-pink-200 bg-white/80 backdrop-blur">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-serif text-xl font-bold text-pink-600">Gradient Expressive</a>

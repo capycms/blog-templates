@@ -9,7 +9,7 @@ export default function ArticlePage({ post }: { post: Post }) {
   return (
     <div>
       <article>
-              <ProgressBar />
+              <ProgressBar barClassName="bg-violet-400" />
               
 
               <h1 className="font-mono text-4xl font-bold mb-4">{post.frontmatter.title}</h1>

@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-white text-gray-800 min-h-screen">
-      
       <header className="border-b border-indigo-200 bg-white/80 backdrop-blur">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-serif text-xl font-bold text-indigo-500">Timeline Digest</a>

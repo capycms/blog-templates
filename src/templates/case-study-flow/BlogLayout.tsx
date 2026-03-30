@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-white text-gray-800 min-h-screen">
-      
       <header className="border-b border-sky-200 bg-sky-50/80 backdrop-blur">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-sans text-xl font-bold text-sky-500">Case Study Flow</a>

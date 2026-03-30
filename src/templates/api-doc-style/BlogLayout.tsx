@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-white text-gray-800 min-h-screen">
-      
       <header className="border-b border-gray-200 bg-gray-50/80 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-mono text-xl font-bold text-blue-500">API Doc Style</a>
@@ -12,15 +11,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
           </nav>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-6 py-8 flex gap-8">
-        
-          <aside className="w-64 shrink-0 hidden lg:block">
-            <div className="sticky top-8 bg-gray-50 border-gray-200 border rounded-lg p-4">
-              <h3 className="font-mono font-bold mb-2">About</h3>
-              <p className="text-sm opacity-70">API Doc Style template</p>
-            </div>
-          </aside><div className="flex-1 min-w-0">{children}</div>
-      </main>
+      <main className="max-w-6xl mx-auto px-6 py-8">{children}</main>
       <footer className="border-t border-gray-200 mt-12">
         <div className="max-w-6xl mx-auto px-6 py-6 text-center text-sm opacity-60">
           &copy; 2026 API Doc Style &mdash; Built with CapyCMS

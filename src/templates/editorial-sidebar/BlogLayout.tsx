@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-gray-900 text-gray-100 min-h-screen">
-      
       <header className="border-b border-gray-700 bg-gray-800/80 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-serif text-xl font-bold text-amber-400">Editorial Sidebar</a>

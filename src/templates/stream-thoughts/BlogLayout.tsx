@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-purple-50 text-purple-800 min-h-screen">
-      
       <header className="border-b border-purple-200 bg-white/80 backdrop-blur">
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-mono text-xl font-bold text-purple-500">Stream Thoughts</a>

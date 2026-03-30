@@ -2,7 +2,6 @@
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-amber-50 text-amber-900 min-h-screen">
-      
       <header className="border-b border-amber-200 bg-white/80 backdrop-blur">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-serif text-xl font-bold text-amber-600">Portfolio Journal</a>

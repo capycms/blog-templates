@@ -1,8 +1,7 @@
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-black text-green-500 min-h-screen">
-      
+    <div className="bg-black bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px)] [background-size:100%_4px] text-green-500 min-h-screen">
       <header className="border-b border-green-900 bg-black/80 backdrop-blur">
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="font-mono text-xl font-bold text-green-300">Retro Terminal</a>
