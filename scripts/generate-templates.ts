@@ -38,7 +38,7 @@ const templates: TemplateDef[] = [
   { id: "whitespace-serif", name: "Whitespace Serif", category: "minimal", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-gray-400", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-gray-100", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "outline-only", name: "Outline Only", category: "minimal", bgClass: "bg-white", textClass: "text-gray-900", accentClass: "text-gray-600", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-transparent", borderClass: "border-gray-900", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "text-first", name: "Text First", category: "minimal", bgClass: "bg-white", textClass: "text-gray-700", accentClass: "text-indigo-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
-  { id: "grid-dots", name: "Grid Dots", category: "minimal", bgClass: "bg-gray-50", textClass: "text-gray-800", accentClass: "text-gray-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-200", layout: "sidebar-right", maxWidth: "max-w-5xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "grid-dots", name: "Grid Dots", category: "minimal", bgClass: "bg-gray-50 bg-[url('/patterns/dots.svg')] bg-repeat", textClass: "text-gray-800", accentClass: "text-gray-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-200", layout: "sidebar-right", maxWidth: "max-w-5xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "silent-elegance", name: "Silent Elegance", category: "minimal", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-amber-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-amber-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: true, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
 
   // EDITORIAL (8)
@@ -279,11 +279,35 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
 
   switch (t.listStyle) {
     case "grid":
-    case "masonry":
       listBody = `
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
           <a key={post.frontmatter.slug} href={\`/templates/${t.id}/\${post.frontmatter.slug}\`} className="block group ${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow">
+            ${showFeaturedImage ? `
+            {post.frontmatter.coverImage ? (
+              <div className="aspect-video ${imagePlaceholder} overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}` : ""}
+            <div className="p-4">
+              <h2 className="${t.headingFont} text-lg font-bold group-hover:underline">{post.frontmatter.title}</h2>
+              <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
+              <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>${t.showTags ? `\n              <div className="mt-3"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}
+            </div>
+          </a>
+        ))}
+      </div>`;
+      break;
+    case "masonry":
+      listBody = `
+      <div className="columns-1 md:columns-2 lg:columns-3 [column-gap:1.5rem]">
+        {posts.map((post) => (
+          <a key={post.frontmatter.slug} href={\`/templates/${t.id}/\${post.frontmatter.slug}\`} className="block break-inside-avoid mb-6 group ${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow">
             ${showFeaturedImage ? `
             {post.frontmatter.coverImage ? (
               <div className="aspect-video ${imagePlaceholder} overflow-hidden">

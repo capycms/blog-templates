@@ -6,9 +6,9 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
     <div>
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles" }]} />
       <h1 className="font-serif text-3xl font-bold mb-8">Articles</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="columns-1 md:columns-2 lg:columns-3 [column-gap:1.5rem]">
         {posts.map((post) => (
-          <a key={post.frontmatter.slug} href={`/templates/magazine-grid/${post.frontmatter.slug}`} className="block group bg-white rounded-lg border border-amber-200 overflow-hidden hover:shadow-md transition-shadow">
+          <a key={post.frontmatter.slug} href={`/templates/magazine-grid/${post.frontmatter.slug}`} className="block break-inside-avoid mb-6 group bg-white rounded-lg border border-amber-200 overflow-hidden hover:shadow-md transition-shadow">
             
             {post.frontmatter.coverImage ? (
               <div className="aspect-video bg-gray-200 overflow-hidden">
