@@ -17,7 +17,7 @@ export default function ArticlePage({ post }: { post: Post }) {
                 <span>&middot;</span><ReadingTime content={post.content} />
               </div>
               
-              <div className="prose  max-w-none font-sans">
+              <div className="prose  max-w-none font-serif">
                 <MarkdownRenderer source={post.content} variant="light" />
               </div>
               

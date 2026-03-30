@@ -6,6 +6,6 @@ export const config: TemplateConfig = {
   category: "minimal",
   description: "Blank Canvas template",
   features: ["reading-time"],
-  typography: "sans-serif",
+  typography: "serif",
   colorScheme: "light",
 };

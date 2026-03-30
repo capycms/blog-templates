@@ -7,7 +7,7 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
       <h1 className="font-mono text-3xl font-bold mb-8">Articles</h1>
       <div className="space-y-6">
         {posts.map((post) => (
-          <a key={post.frontmatter.slug} href={`/templates/outline-only/${post.frontmatter.slug}`} className="block group bg-white rounded-lg border border-gray-900 p-6 hover:shadow-md transition-shadow">
+          <a key={post.frontmatter.slug} href={`/templates/outline-only/${post.frontmatter.slug}`} className="block group bg-transparent rounded-lg border border-gray-900 p-6 hover:shadow-md transition-shadow">
             
             <h2 className="font-mono text-xl font-bold group-hover:underline">{post.frontmatter.title}</h2>
             <p className="text-sm opacity-60 mt-1">{post.frontmatter.date} &middot; {post.frontmatter.author}</p>

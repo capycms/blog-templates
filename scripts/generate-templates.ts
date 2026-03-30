@@ -32,11 +32,11 @@ interface TemplateDef {
 
 const templates: TemplateDef[] = [
   // MINIMAL (8)
-  { id: "blank-canvas", name: "Blank Canvas", category: "minimal", bgClass: "bg-white", textClass: "text-gray-900", accentClass: "text-gray-500", headingFont: "font-serif", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-200", layout: "full-width", maxWidth: "max-w-4xl", hasDarkBg: false, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "blank-canvas", name: "Blank Canvas", category: "minimal", bgClass: "bg-white", textClass: "text-gray-900", accentClass: "text-gray-500", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-gray-200", layout: "full-width", maxWidth: "max-w-4xl", hasDarkBg: false, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "one-column-light", name: "One Column Light", category: "minimal", bgClass: "bg-gray-50", textClass: "text-gray-800", accentClass: "text-blue-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-100", layout: "centered", maxWidth: "max-w-xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "stark-monochrome", name: "Stark Monochrome", category: "minimal", bgClass: "bg-white", textClass: "text-black", accentClass: "text-black", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-black", layout: "full-width", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: true, showProgressBar: false, showToc: false, showRelated: false },
   { id: "whitespace-serif", name: "Whitespace Serif", category: "minimal", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-gray-400", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-gray-100", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
-  { id: "outline-only", name: "Outline Only", category: "minimal", bgClass: "bg-white", textClass: "text-gray-900", accentClass: "text-gray-600", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-900", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "outline-only", name: "Outline Only", category: "minimal", bgClass: "bg-white", textClass: "text-gray-900", accentClass: "text-gray-600", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-transparent", borderClass: "border-gray-900", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "text-first", name: "Text First", category: "minimal", bgClass: "bg-white", textClass: "text-gray-700", accentClass: "text-indigo-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
   { id: "grid-dots", name: "Grid Dots", category: "minimal", bgClass: "bg-gray-50", textClass: "text-gray-800", accentClass: "text-gray-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-200", layout: "sidebar-right", maxWidth: "max-w-5xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "silent-elegance", name: "Silent Elegance", category: "minimal", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-amber-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-amber-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: true, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
@@ -171,7 +171,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="${t.bgClass} ${t.textClass} min-h-screen">
       ${t.showProgressBar ? '<div className="fixed top-0 left-0 w-full h-1 bg-transparent z-50"><div className="h-full bg-current w-0" /></div>' : ""}
-      <header className="border-b ${t.borderClass} ${t.cardBg.includes("/") ? "" : t.cardBg + "/80"} backdrop-blur">
+      <header className="border-b ${t.borderClass} ${t.cardBg === "bg-transparent" ? "bg-transparent" : t.cardBg.includes("/") ? t.cardBg : t.cardBg + "/80"} backdrop-blur">
         <div className="${t.maxWidth} mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="${t.headingFont} text-xl font-bold ${t.accentClass}">${t.name}</a>
           <nav className="flex gap-4 text-sm">
@@ -192,6 +192,78 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 }
 
 function generateArticleList(t: TemplateDef): string {
+  if (t.id === "one-column-light") {
+    return `"use client";
+
+import { useMemo, useState } from "react";
+import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const pageSize = 2;
+  const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+  const [page, setPage] = useState(0);
+
+  const visiblePosts = useMemo(
+    () => posts.slice(page * pageSize, page * pageSize + pageSize),
+    [page, posts]
+  );
+
+  const canPrev = page > 0;
+  const canNext = page < totalPages - 1;
+
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="space-y-8">
+        {visiblePosts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="flex items-baseline justify-between">
+              <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                {post.frontmatter.title}
+              </h2>
+              <span className="text-sm opacity-50 shrink-0 ml-4">{post.frontmatter.date}</span>
+            </div>
+            <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>
+          </a>
+        ))}
+      </div>
+      <div className="mt-10 flex items-center justify-between text-sm">
+        <button
+          type="button"
+          onClick={() => setPage((p) => Math.max(0, p - 1))}
+          disabled={!canPrev}
+          className={
+            "px-3 py-1.5 rounded border border-gray-200 hover:bg-white transition-colors " +
+            (!canPrev ? "opacity-40 cursor-not-allowed" : "")
+          }
+        >
+          Previous
+        </button>
+        <span className="opacity-60">
+          Page {page + 1} of {totalPages}
+        </span>
+        <button
+          type="button"
+          onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+          disabled={!canNext}
+          className={
+            "px-3 py-1.5 rounded border border-gray-200 hover:bg-white transition-colors " +
+            (!canNext ? "opacity-40 cursor-not-allowed" : "")
+          }
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
   const imports: string[] = ['import { Post } from "@/lib/types";'];
   if (t.showReadingTime) imports.push('import { ReadingTime } from "@/components/shared/ReadingTime";');
   if (t.showTags) imports.push('import { TagList } from "@/components/shared/TagList";');
