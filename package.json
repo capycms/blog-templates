@@ -9,7 +9,8 @@
     "lint": "eslint",
     "setup": "npx tsx scripts/setup.ts",
     "generate:templates": "npx tsx scripts/generate-templates.ts",
-    "generate:registry": "npx tsx scripts/generate-registry.ts"
+    "generate:registry": "npx tsx scripts/generate-registry.ts",
+    "clone:template": "npx tsx scripts/clone-template.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",

@@ -29,6 +29,24 @@ Vous obtenez un blog propre, prêt à écrire.
 npm run setup -- --template blank-canvas --title "Mon Blog" --author "Alice" --description "Un blog tech"
 ```
 
+### Configuration via `.env`
+
+Si vous préférez piloter le setup par configuration (pratique en repo **GitHub Template**), créez un fichier `.env` à la racine (exemple : `.env.example`) :
+
+```bash
+cp .env.example .env
+```
+
+Puis exécutez :
+
+```bash
+npm run setup
+```
+
+En CI (GitHub Actions), vous pouvez soit :
+- définir `CAPYCMS_TEMPLATE_ID` comme **variable** du repo (Settings → Secrets and variables → Actions),
+- soit committer un `.env` (non-secret) contenant `CAPYCMS_TEMPLATE_ID`.
+
 ## Catégories de templates
 
 | Catégorie | Nb | Exemples |

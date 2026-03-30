@@ -24,7 +24,48 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+
+      - name: Setup Pages
+        id: setup_pages
+        uses: actions/configure-pages@v5
+
+      - name: Run CapyCMS setup
+        run: |
+          TEMPLATE_ID="${CAPYCMS_TEMPLATE_ID:-}"
+          BLOG_TITLE=""
+          BLOG_AUTHOR=""
+          BLOG_DESCRIPTION=""
+
+          # Optional: read from a committed .env (non-secret project config)
+          if [ -z "$TEMPLATE_ID" ] && [ -f .env ]; then
+            TEMPLATE_ID=$(grep -E '^CAPYCMS_TEMPLATE_ID=' .env | tail -n 1 | cut -d '=' -f2- | tr -d '\r' | sed -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'$//")
+          fi
+
+          # Read from capycms.json (primary config source from CapyCMS app)
+          if [ -f capycms.json ]; then
+            [ -z "$TEMPLATE_ID" ] && TEMPLATE_ID=$(node -e "console.log(require('./capycms.json').templateId || '')")
+            BLOG_TITLE=$(node -e "console.log(require('./capycms.json').title || '')")
+            BLOG_AUTHOR=$(node -e "console.log(require('./capycms.json').author || '')")
+            BLOG_DESCRIPTION=$(node -e "console.log(require('./capycms.json').description || '')")
+          fi
+
+          # Fallback values
+          REPO_NAME="${{ github.event.repository.name }}"
+          OWNER="${{ github.repository_owner }}"
+          [ -z "$BLOG_TITLE" ] && BLOG_TITLE="$REPO_NAME"
+          [ -z "$BLOG_AUTHOR" ] && BLOG_AUTHOR="$OWNER"
+          [ -z "$BLOG_DESCRIPTION" ] && BLOG_DESCRIPTION="A blog powered by CapyCMS"
+
+          if [ -n "$TEMPLATE_ID" ] && [ -f scripts/setup.ts ] && [ -d src/templates ]; then
+            echo "Setting up template: $TEMPLATE_ID for $BLOG_TITLE by $BLOG_AUTHOR"
+            npx tsx scripts/setup.ts --template "$TEMPLATE_ID" --title "$BLOG_TITLE" --author "$BLOG_AUTHOR" --description "$BLOG_DESCRIPTION"
+          else
+            echo "Skipping CapyCMS setup (no template configured or already set up)."
+          fi
       - run: npm run build
+        env:
+          PAGES_BASE_PATH: ${{ steps.setup_pages.outputs.base_path }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.setup_pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

@@ -13,6 +13,41 @@ import path from "path";
 const root = process.cwd();
 
 // ---------------------------------------------------------------------------
+// Optional: Load a local `.env` file for non-secret project configuration.
+// This keeps the repo easy to use as a GitHub template.
+// ---------------------------------------------------------------------------
+function loadDotEnv(filename = ".env") {
+  const envPath = path.join(root, filename);
+  if (!fs.existsSync(envPath)) return;
+  const raw = fs.readFileSync(envPath, "utf-8");
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+
+    const eq = trimmed.indexOf("=");
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    if (!key) continue;
+
+    // Strip surrounding quotes.
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    // Do not override explicitly provided environment variables.
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadDotEnv();
+
+// ---------------------------------------------------------------------------
 // Parse CLI arguments (--key value)
 // ---------------------------------------------------------------------------
 function parseArgs(): Record<string, string> {
@@ -27,7 +62,21 @@ function parseArgs(): Record<string, string> {
   return args;
 }
 
-const cliArgs = parseArgs();
+const cliArgsFromEnv = Object.fromEntries(
+  Object.entries({
+    template: process.env.CAPYCMS_TEMPLATE_ID,
+    title: process.env.CAPYCMS_BLOG_TITLE,
+    author: process.env.CAPYCMS_BLOG_AUTHOR,
+    description: process.env.CAPYCMS_BLOG_DESCRIPTION,
+    domain: process.env.CAPYCMS_CUSTOM_DOMAIN,
+  }).filter(([, v]) => typeof v === "string" && v.length > 0)
+) as Record<string, string>;
+
+const cliArgs = {
+  ...cliArgsFromEnv,
+  ...parseArgs(),
+};
+
 const isNonInteractive = !!cliArgs.template;
 
 let rl: readline.Interface;
@@ -134,6 +183,65 @@ function escapeRegex(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function ensureImport(source: string, importLine: string): string {
+  if (source.includes(importLine)) return source;
+
+  // Keep the client directive as the first statement.
+  const lines = source.split("\n");
+  const firstNonEmpty = lines.findIndex((l) => l.trim().length > 0);
+  const hasUseClient =
+    firstNonEmpty !== -1 &&
+    (lines[firstNonEmpty].trim() === '"use client";' ||
+      lines[firstNonEmpty].trim() === '"use client"' ||
+      lines[firstNonEmpty].trim() === "'use client';" ||
+      lines[firstNonEmpty].trim() === "'use client'");
+
+  if (hasUseClient) {
+    // Insert right after the directive line.
+    lines.splice(firstNonEmpty + 1, 0, "", importLine);
+    return lines.join("\n");
+  }
+
+  return `${importLine}\n\n${source.replace(/^\s*\n+/, "")}`;
+}
+
+function wrapHrefsWithBasePath(source: string): string {
+  let out = source;
+
+  // href="/..."
+  out = out.replace(/href="([^"]*)"/g, (_m, href) => {
+    return `href={withBasePath(${JSON.stringify(href)})}`;
+  });
+
+  // href='...'
+  out = out.replace(/href='([^']*)'/g, (_m, href) => {
+    return `href={withBasePath(${JSON.stringify(href)})}`;
+  });
+
+  // href={`...`}
+  out = out.replace(/href=\{`([\s\S]*?)`\}/g, (_m, body) => {
+    return `href={withBasePath(\`${body}\`)}`;
+  });
+
+  // href={"..." + expr}
+  out = out.replace(
+    /href=\{\s*"([^"]*)"\s*\+\s*([^}]+)\}/g,
+    (_m, left, right) => {
+      return `href={withBasePath(${JSON.stringify(left)} + ${right.trim()})}`;
+    }
+  );
+
+  // href={'...' + expr}
+  out = out.replace(
+    /href=\{\s*'([^']*)'\s*\+\s*([^}]+)\}/g,
+    (_m, left, right) => {
+      return `href={withBasePath(${JSON.stringify(left)} + ${right.trim()})}`;
+    }
+  );
+
+  return out;
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -234,11 +342,16 @@ async function main() {
   const destBlogDir = path.join(root, "src/components/blog");
   ensureDir(destBlogDir);
 
+  const basePathImport = 'import { withBasePath } from "@/lib/base-path";';
+
   // BlogLayout — replace template name with blog title
   let layoutComponent = fs.readFileSync(
     path.join(srcTemplateDir, "BlogLayout.tsx"),
     "utf-8"
   );
+
+  layoutComponent = ensureImport(layoutComponent, basePathImport);
+  layoutComponent = wrapHrefsWithBasePath(layoutComponent);
   layoutComponent = layoutComponent.replace(
     new RegExp(escapeRegex(chosen.name), "g"),
     blogTitle
@@ -255,13 +368,21 @@ async function main() {
     new RegExp(`/templates/${escapeRegex(chosen.id)}/`, "g"),
     "/"
   );
+  listComponent = ensureImport(listComponent, basePathImport);
+  listComponent = wrapHrefsWithBasePath(listComponent);
   fs.writeFileSync(path.join(destBlogDir, "ArticleList.tsx"), listComponent);
   console.log("  ✓ ArticleList.tsx");
 
   // ArticlePage — copy as-is
-  fs.copyFileSync(
+  let articleComponent = fs.readFileSync(
     path.join(srcTemplateDir, "ArticlePage.tsx"),
-    path.join(destBlogDir, "ArticlePage.tsx")
+    "utf-8"
+  );
+  articleComponent = ensureImport(articleComponent, basePathImport);
+  articleComponent = wrapHrefsWithBasePath(articleComponent);
+  fs.writeFileSync(
+    path.join(destBlogDir, "ArticlePage.tsx"),
+    articleComponent
   );
   console.log("  ✓ ArticlePage.tsx");
 
@@ -387,6 +508,7 @@ async function main() {
     'import path from "path";',
     'import matter from "gray-matter";',
     'import { Post, PostFrontmatter } from "./types";',
+    'import { withBasePath } from "./base-path";',
     "",
     'const postsDirectory = path.join(process.cwd(), "content/posts");',
     "",
@@ -398,7 +520,11 @@ async function main() {
     "      const filePath = path.join(postsDirectory, filename);",
     '      const fileContents = fs.readFileSync(filePath, "utf-8");',
     "      const { data, content } = matter(fileContents);",
-    "      return { frontmatter: data as PostFrontmatter, content };",
+    "      const frontmatter = data as PostFrontmatter;",
+    "      return {",
+    "        frontmatter: frontmatter.coverImage ? { ...frontmatter, coverImage: withBasePath(frontmatter.coverImage) } : frontmatter,",
+    "        content,",
+    "      };",
     "    })",
     "    .sort(",
     "      (a, b) =>",
@@ -426,46 +552,55 @@ async function main() {
   // -----------------------------------------------------------------------
   // 7. Create content/posts/ with a sample post
   // -----------------------------------------------------------------------
-  ensureDir(path.join(root, "content/posts"));
-  const today = new Date().toISOString().split("T")[0];
-  const samplePost = [
-    "---",
-    'title: "Hello World"',
-    'slug: "hello-world"',
-    `date: "${today}"`,
-    `excerpt: "Welcome to ${blogTitle}."`,
-    `author: "${blogAuthor}"`,
-    'tags: ["intro"]',
-    "---",
-    "",
-    "# Hello World",
-    "",
-    `Welcome to **${blogTitle}**! This is your first blog post.`,
-    "",
-    "Edit this file or create new `.md` files in `content/posts/` to add more articles.",
-    "",
-    "## Writing Posts",
-    "",
-    "Each post needs a YAML frontmatter block at the top with these fields:",
-    "",
-    "| Field | Required | Description |",
-    "|-------|----------|-------------|",
-    "| `title` | Yes | Article title |",
-    "| `slug` | Yes | URL slug (unique, used in the URL) |",
-    "| `date` | Yes | Publication date (YYYY-MM-DD) |",
-    "| `excerpt` | Yes | Short description |",
-    "| `author` | Yes | Author name |",
-    "| `tags` | Yes | Array of tags |",
-    "| `coverImage` | No | Cover image path |",
-    "",
-    "Then write your content in **Markdown** below the frontmatter.",
-    "",
-  ];
-  fs.writeFileSync(
-    path.join(root, "content/posts/hello-world.md"),
-    samplePost.join("\n")
-  );
-  console.log("  ✓ content/posts/hello-world.md");
+  const postsDir = path.join(root, "content/posts");
+  ensureDir(postsDir);
+  const existingPosts = fs
+    .readdirSync(postsDir)
+    .filter((f) => f.endsWith(".md"));
+
+  if (existingPosts.length === 0) {
+    const today = new Date().toISOString().split("T")[0];
+    const samplePost = [
+      "---",
+      'title: "Hello World"',
+      'slug: "hello-world"',
+      `date: "${today}"`,
+      `excerpt: "Welcome to ${blogTitle}."`,
+      `author: "${blogAuthor}"`,
+      'tags: ["intro"]',
+      "---",
+      "",
+      "# Hello World",
+      "",
+      `Welcome to **${blogTitle}**! This is your first blog post.`,
+      "",
+      "Edit this file or create new `.md` files in `content/posts/` to add more articles.",
+      "",
+      "## Writing Posts",
+      "",
+      "Each post needs a YAML frontmatter block at the top with these fields:",
+      "",
+      "| Field | Required | Description |",
+      "|-------|----------|-------------|",
+      "| `title` | Yes | Article title |",
+      "| `slug` | Yes | URL slug (unique, used in the URL) |",
+      "| `date` | Yes | Publication date (YYYY-MM-DD) |",
+      "| `excerpt` | Yes | Short description |",
+      "| `author` | Yes | Author name |",
+      "| `tags` | Yes | Array of tags |",
+      "| `coverImage` | No | Cover image path |",
+      "",
+      "Then write your content in **Markdown** below the frontmatter.",
+      "",
+    ];
+    fs.writeFileSync(
+      path.join(postsDir, "hello-world.md"),
+      samplePost.join("\n")
+    );
+    console.log("  ✓ content/posts/hello-world.md");
+  } else {
+    console.log(`  ✓ content/posts/ (kept ${existingPosts.length} existing post(s))`);
+  }
 
   // -----------------------------------------------------------------------
   // 8. CNAME

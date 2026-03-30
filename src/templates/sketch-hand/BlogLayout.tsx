@@ -1,12 +1,16 @@
+import { withBasePath } from "@/lib/base-path";
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-amber-50 bg-[url('/patterns/sketch.svg')] bg-repeat text-amber-900 min-h-screen">
+    <div
+      className="bg-amber-50 bg-repeat text-amber-900 min-h-screen"
+      style={{ backgroundImage: `url(${withBasePath("/patterns/sketch.svg")})` }}
+    >
       <header className="border-b border-amber-300 border-dashed bg-amber-50/80 backdrop-blur">
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="font-serif text-xl font-bold text-amber-600">Sketch Hand</a>
+          <a href={withBasePath("/")} className="font-serif text-xl font-bold text-amber-600">Sketch Hand</a>
           <nav className="flex gap-4 text-sm">
-            <a href="/" className="hover:underline">Home</a>
+            <a href={withBasePath("/")} className="hover:underline">Home</a>
             <a href="#" className="hover:underline">About</a>
           </nav>
         </div>

@@ -1,6 +1,7 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import { withBasePath } from "@/lib/base-path";
 import rehypePrettyCode from "rehype-pretty-code";
 
 type MarkdownVariant = "light" | "dark" | "outline" | "terminal" | "wiki" | "neon";
@@ -152,14 +153,25 @@ function getComponents(variant: MarkdownVariant) {
     },
     hr: () => <hr className={`my-8 ${hrClass}`} />,
     a: (props: React.ComponentProps<"a">) => (
-      <a className={linkClass} {...props} />
+      <a
+        className={linkClass}
+        {...props}
+        href={
+          typeof props.href === "string" ? withBasePath(props.href) : undefined
+        }
+      />
     ),
     strong: (props: React.ComponentProps<"strong">) => (
       <strong className="font-bold" {...props} />
     ),
     img: (props: React.ComponentProps<"img">) => (
       // eslint-disable-next-line @next/next/no-img-element
-      <img className="rounded-lg max-w-full h-auto my-4" alt={props.alt || ""} {...props} />
+      <img
+        className="rounded-lg max-w-full h-auto my-4"
+        alt={props.alt || ""}
+        {...props}
+        src={typeof props.src === "string" ? withBasePath(props.src) : undefined}
+      />
     ),
   };
 }
