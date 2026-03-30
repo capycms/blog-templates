@@ -357,6 +357,7 @@ function generateArticlePage(t: TemplateDef): string {
   const tagVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
   const newsletterVariant = t.hasDarkBg ? "dark" : "light";
   const tocVariant = t.hasDarkBg ? "dark" : "light";
+  const markdownVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
 
   return `${imports.join("\n")}
 
@@ -385,7 +386,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               </div>${t.showTags ? `\n              <div className="mb-6"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}${t.showToc ? `\n              <TableOfContents items={toc} variant="${tocVariant}" />` : ""}
               
               <div className="prose ${t.hasDarkBg ? "prose-invert" : ""} max-w-none ${t.bodyFont}">
-                <MarkdownRenderer source={post.content} />
+                <MarkdownRenderer source={post.content} variant="${markdownVariant}" />
               </div>
               ${t.showNewsletter ? `\n              <NewsletterCTA variant="${newsletterVariant}" />` : ""}${t.showAuthorBio ? '\n              <AuthorBio author={post.frontmatter.author} />' : ""}
           </article>

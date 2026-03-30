@@ -18,7 +18,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="mb-6"><TagList tags={post.frontmatter.tags} variant="dark" /></div>
               
               <div className="prose prose-invert max-w-none font-mono">
-                <MarkdownRenderer source={post.content} />
+                <MarkdownRenderer source={post.content} variant="dark" />
               </div>
               
           </article>

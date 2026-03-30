@@ -16,7 +16,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               </div>
               
               <div className="prose  max-w-none font-mono">
-                <MarkdownRenderer source={post.content} />
+                <MarkdownRenderer source={post.content} variant="light" />
               </div>
               
           </article>
