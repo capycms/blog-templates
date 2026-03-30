@@ -312,6 +312,62 @@ function generateLayout(t: TemplateDef): string {
             </div>
           </aside>`;
 
+  const industryInsightsSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">News</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/vite-vs-nextjs" className="hover:underline">
+                      Vite vs Next.js
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs opacity-70">Weekly briefings and deep dives.</p>
+              </div>
+            </div>
+          </aside>`;
+
+  const cozyBlogSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">About me</p>
+                <p className="mt-2 text-sm opacity-70">
+                  Warm notes on building, learning, and life.
+                </p>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Latest</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>`;
+
   const sidebarContent =
     t.id === "newspaper-classic"
       ? newspaperSidebarContent
@@ -323,6 +379,10 @@ function generateLayout(t: TemplateDef): string {
             ? corporateMinimalSidebarContent
             : t.id === "executive-brief"
               ? executiveBriefSidebarContent
+              : t.id === "industry-insights"
+                ? industryInsightsSidebarContent
+                : t.id === "cozy-blog"
+                  ? cozyBlogSidebarContent
         : defaultSidebarContent;
 
   const centeredChildren =
@@ -972,6 +1032,153 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
       {filtered.length === 0 ? (
         <p className="text-sm opacity-70 mt-10">No results.</p>
       ) : null}
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "b2b-index") {
+    return `import { Post } from "@/lib/types";
+import { TagList } from "@/components/shared/TagList";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const [featured, ...rest] = posts;
+
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">B2B Index</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {featured ? (
+          <a
+            href={"/templates/${t.id}/" + featured.frontmatter.slug}
+            className="block group lg:col-span-2"
+          >
+            <div className="${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow">
+              <div className="p-6">
+                <p className="text-xs uppercase tracking-widest opacity-60">Featured</p>
+                <h2 className="${t.headingFont} text-2xl font-bold mt-2 group-hover:underline">
+                  {featured.frontmatter.title}
+                </h2>
+                <p className="mt-3 opacity-70">{featured.frontmatter.excerpt}</p>
+                <div className="mt-4">
+                  <TagList tags={featured.frontmatter.tags} />
+                </div>
+              </div>
+            </div>
+          </a>
+        ) : null}
+
+        <div className="space-y-6">
+          {rest.map((post) => (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className="block group"
+            >
+              <div className="${t.cardBg} rounded-lg border ${t.borderClass} p-5 hover:shadow-md transition-shadow">
+                <h3 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                  {post.frontmatter.title}
+                </h3>
+                <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
+                <div className="mt-3">
+                  <TagList tags={post.frontmatter.tags} />
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "home-page-blog") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const author = posts[0]?.frontmatter.author || "Author";
+  const initial = author.charAt(0).toUpperCase();
+
+  return (
+    <div>
+      <div className="rounded-xl border ${t.borderClass} ${t.cardBg} p-8 mb-10">
+        <h1 className="${t.headingFont} text-4xl font-bold">Home Page</h1>
+        <p className="mt-3 opacity-70 max-w-2xl">
+          Portfolio intro section with a blog grid below.
+        </p>
+        <div className="mt-6 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center text-lg font-bold text-rose-700">
+            {initial}
+          </div>
+          <div>
+            <p className="font-semibold">{author}</p>
+            <p className="text-sm opacity-60">Designer & builder</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 className="${t.headingFont} text-2xl font-bold mb-6">Latest posts</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group rounded-lg border ${t.borderClass} ${t.cardBg} p-6 hover:shadow-md transition-shadow"
+          >
+            <p className="text-sm opacity-60">{post.frontmatter.date}</p>
+            <h3 className="${t.headingFont} text-xl font-bold mt-1 group-hover:underline">
+              {post.frontmatter.title}
+            </h3>
+            <p className="mt-2 opacity-70">{post.frontmatter.excerpt}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "stream-thoughts") {
+    return `import { Post } from "@/lib/types";
+
+const noteColors = ["bg-yellow-50", "bg-pink-50", "bg-sky-50", "bg-emerald-50"];
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Stream</h1>
+      <div className="space-y-4">
+        {posts.map((post, i) => {
+          const bg = noteColors[i % noteColors.length];
+          const rot = i % 2 === 1 ? "-rotate-1" : "rotate-1";
+          return (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className="block group"
+            >
+              <div
+                className={
+                  "p-5 rounded-lg border ${t.borderClass} hover:shadow-md transition-shadow " +
+                  bg +
+                  " " +
+                  rot
+                }
+              >
+                <p className="text-xs opacity-60">{post.frontmatter.date}</p>
+                <h2 className="${t.headingFont} text-xl font-bold mt-1 group-hover:underline">
+                  {post.frontmatter.title}
+                </h2>
+                <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   );
 }
