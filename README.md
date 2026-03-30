@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CapyCMS Blog Templates
 
-## Getting Started
+**50 templates de blog Next.js** prêts à l'emploi, déployables sur GitHub Pages.
 
-First, run the development server:
+🔗 **[Démo en ligne](https://templates.capycms.com)** — Parcourez et prévisualisez les 50 templates.
+
+## Utilisation rapide
+
+1. Cliquez sur **"Use this template"** sur GitHub
+2. Clonez votre nouveau repo
+3. Lancez le script de configuration :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run setup
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le script interactif vous guide pour :
+- **Choisir un template** parmi 50 styles (6 catégories)
+- **Nommer votre blog** (titre, auteur, description)
+- **Configurer un domaine custom** (optionnel)
+- **Nettoyer** tous les fichiers de démo et le catalogue
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Vous obtenez un blog propre, prêt à écrire.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Mode non-interactif
 
-## Learn More
+```bash
+npm run setup -- --template blank-canvas --title "Mon Blog" --author "Alice" --description "Un blog tech"
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Catégories de templates
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Catégorie | Nb | Exemples |
+|---|---|---|
+| **Minimal** | 8 | Blank Canvas, Stark Monochrome, Grid Dots |
+| **Editorial** | 8 | Magazine Grid, Newspaper Classic, Folio Editorial |
+| **Developer** | 8 | Devlog Terminal, Hacker Neon, Retro Terminal |
+| **Creative** | 9 | Rainbow Cards, Neon Glitch, Retro 70s |
+| **Business** | 9 | Corporate Minimal, Landing Blog, Resource Hub |
+| **Personal** | 8 | Cozy Blog, Digital Garden, Indie Maker |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Stack technique
 
-## Deploy on Vercel
+- **Next.js 16** — App Router, static export
+- **Tailwind CSS v4** — Avec `@tailwindcss/typography`
+- **next-mdx-remote v6** — Rendu MDX côté serveur
+- **gray-matter** — Frontmatter YAML
+- **GitHub Pages** — Déploiement automatique via GitHub Actions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Structure après setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+content/posts/          # Vos articles en Markdown
+src/components/blog/    # Le template choisi
+  BlogLayout.tsx        # Layout principal
+  ArticleList.tsx       # Page d'accueil (liste)
+  ArticlePage.tsx       # Page article
+  config.ts             # Configuration du template
+src/components/shared/  # Composants réutilisables
+src/lib/                # Types et utilitaires
+```
+
+## Écrire un article
+
+Créez un fichier `.md` dans `content/posts/` :
+
+```markdown
+---
+title: "Mon premier article"
+date: "2025-01-15"
+author: "Alice"
+excerpt: "Un résumé de l'article."
+tags: ["nextjs", "blog"]
+coverImage: "/images/cover.jpg"
+---
+
+Votre contenu en **Markdown** ici.
+```
+
+## Déployer
+
+Le workflow GitHub Actions est inclus. Activez GitHub Pages (Settings → Pages → Source: GitHub Actions) et chaque push sur `main` déploie automatiquement.
+
+## Développement
+
+```bash
+npm run dev          # Serveur de dev
+npm run build        # Build statique
+npm run setup        # Configurer le blog
+```
+
+## Licence
+
+MIT
