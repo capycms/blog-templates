@@ -5,7 +5,7 @@ date: "2026-03-05"
 excerpt: "A curated list of must-have React libraries for state management, forms, animations, and more."
 author: "CapyCMS Team"
 tags: ["react", "libraries", "tools"]
-coverImage: "/images/demo-cover-3.jpg"
+coverImage: "/images/demo-cover-3.svg"
 ---
 
 # 10 Essential React Libraries in 2026

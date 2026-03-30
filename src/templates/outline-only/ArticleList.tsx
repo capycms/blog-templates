@@ -8,10 +8,11 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
       <div className="space-y-6">
         {posts.map((post) => (
           <a key={post.frontmatter.slug} href={`/templates/outline-only/${post.frontmatter.slug}`} className="block group bg-white rounded-lg border border-gray-900 p-6 hover:shadow-md transition-shadow">
+            
             <h2 className="font-mono text-xl font-bold group-hover:underline">{post.frontmatter.title}</h2>
             <p className="text-sm opacity-60 mt-1">{post.frontmatter.date} &middot; {post.frontmatter.author}</p>
             <p className="opacity-70 mt-2">{post.frontmatter.excerpt}</p>
-            <div className="mt-3"><TagList tags={post.frontmatter.tags} /></div>
+            <div className="mt-3"><TagList tags={post.frontmatter.tags} variant="outline" /></div>
           </a>
         ))}
       </div>

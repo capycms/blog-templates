@@ -11,6 +11,12 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
             <span className="text-xs opacity-50">{post.frontmatter.date}</span>
             <h2 className="font-serif text-lg font-bold group-hover:underline">{post.frontmatter.title}</h2>
             <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>
+            {post.frontmatter.coverImage ? (
+              <div className="mt-3 max-w-sm aspect-video bg-gray-200 overflow-hidden rounded border border-indigo-200">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={post.frontmatter.coverImage} alt="" className="w-full h-full object-cover" />
+              </div>
+            ) : null}
           </a>
         ))}
       </div>

@@ -5,7 +5,7 @@ date: "2026-03-10"
 excerpt: "An in-depth comparison of Vite and Next.js — build speed, features, use cases, and when to pick each."
 author: "CapyCMS Team"
 tags: ["vite", "nextjs", "comparison"]
-coverImage: "/images/demo-cover-2.jpg"
+coverImage: "/images/demo-cover-2.svg"
 ---
 
 # Vite vs Next.js: Choosing the Right Tool

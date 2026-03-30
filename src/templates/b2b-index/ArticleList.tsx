@@ -8,11 +8,12 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
           <a key={post.frontmatter.slug} href={`/templates/b2b-index/${post.frontmatter.slug}`} className="block group bg-blue-50 rounded-lg border border-blue-200 overflow-hidden hover:shadow-md transition-shadow">
+            
             <div className="p-4">
               <h2 className="font-serif text-lg font-bold group-hover:underline">{post.frontmatter.title}</h2>
               <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
               <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>
-              <div className="mt-3"><TagList tags={post.frontmatter.tags} /></div>
+              <div className="mt-3"><TagList tags={post.frontmatter.tags} variant="light" /></div>
             </div>
           </a>
         ))}

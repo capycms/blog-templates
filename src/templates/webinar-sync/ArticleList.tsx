@@ -16,7 +16,7 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
           </a>
         ))}
       </div>
-      <NewsletterCTA />
+      <NewsletterCTA variant="light" />
     </div>
   );
 }

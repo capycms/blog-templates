@@ -94,6 +94,19 @@ const templates: TemplateDef[] = [
   { id: "micro-personal", name: "Micro Personal", category: "personal", bgClass: "bg-pink-50", textClass: "text-pink-900", accentClass: "text-pink-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-pink-200", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "timeline", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
 ];
 
+const templatesWithFeaturedImage = new Set([
+  "magazine-grid",
+  "newspaper-classic",
+  "journal-split",
+  "editorial-sidebar",
+  "gallery-layout",
+  "folio-editorial",
+  "timeline-digest",
+  "split-visual",
+  "landing-blog",
+  "case-study-flow",
+]);
+
 // ---------------------------------------------------------------------------
 // File generators
 // ---------------------------------------------------------------------------
@@ -185,6 +198,11 @@ function generateArticleList(t: TemplateDef): string {
   if (t.showBreadcrumbs) imports.push('import { Breadcrumbs } from "@/components/shared/Breadcrumbs";');
   if (t.showNewsletter) imports.push('import { NewsletterCTA } from "@/components/shared/NewsletterCTA";');
 
+  const showFeaturedImage = templatesWithFeaturedImage.has(t.id);
+  const tagVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
+  const newsletterVariant = t.hasDarkBg ? "dark" : "light";
+  const imagePlaceholder = t.hasDarkBg ? "bg-white/10" : "bg-gray-200";
+
   let listBody: string;
 
   switch (t.listStyle) {
@@ -194,10 +212,21 @@ function generateArticleList(t: TemplateDef): string {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
           <a key={post.frontmatter.slug} href={\`/templates/${t.id}/\${post.frontmatter.slug}\`} className="block group ${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow">
+            ${showFeaturedImage ? `
+            {post.frontmatter.coverImage ? (
+              <div className="aspect-video ${imagePlaceholder} overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}` : ""}
             <div className="p-4">
               <h2 className="${t.headingFont} text-lg font-bold group-hover:underline">{post.frontmatter.title}</h2>
               <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
-              <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>${t.showTags ? '\n              <div className="mt-3"><TagList tags={post.frontmatter.tags} /></div>' : ""}
+              <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>${t.showTags ? `\n              <div className="mt-3"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}
             </div>
           </a>
         ))}
@@ -208,9 +237,20 @@ function generateArticleList(t: TemplateDef): string {
       <div className="space-y-6">
         {posts.map((post) => (
           <a key={post.frontmatter.slug} href={\`/templates/${t.id}/\${post.frontmatter.slug}\`} className="block group ${t.cardBg} rounded-lg border ${t.borderClass} p-6 hover:shadow-md transition-shadow">
+            ${showFeaturedImage ? `
+            {post.frontmatter.coverImage ? (
+              <div className="mb-4 aspect-video ${imagePlaceholder} overflow-hidden rounded border ${t.borderClass}">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}` : ""}
             <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">{post.frontmatter.title}</h2>
             <p className="text-sm opacity-60 mt-1">{post.frontmatter.date} &middot; {post.frontmatter.author}</p>
-            <p className="opacity-70 mt-2">{post.frontmatter.excerpt}</p>${t.showTags ? '\n            <div className="mt-3"><TagList tags={post.frontmatter.tags} /></div>' : ""}
+            <p className="opacity-70 mt-2">{post.frontmatter.excerpt}</p>${t.showTags ? `\n            <div className="mt-3"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}
           </a>
         ))}
       </div>`;
@@ -223,7 +263,13 @@ function generateArticleList(t: TemplateDef): string {
             <div className="absolute -left-10 top-1 w-4 h-4 rounded-full ${t.bgClass} border-2 ${t.borderClass}" />
             <span className="text-xs opacity-50">{post.frontmatter.date}</span>
             <h2 className="${t.headingFont} text-lg font-bold group-hover:underline">{post.frontmatter.title}</h2>
-            <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>
+            <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>${showFeaturedImage ? `
+            {post.frontmatter.coverImage ? (
+              <div className="mt-3 max-w-sm aspect-video ${imagePlaceholder} overflow-hidden rounded border ${t.borderClass}">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={post.frontmatter.coverImage} alt="" className="w-full h-full object-cover" />
+              </div>
+            ) : null}` : ""}
           </a>
         ))}
       </div>`;
@@ -241,7 +287,31 @@ function generateArticleList(t: TemplateDef): string {
       </div>`;
       break;
     default: // list
-      listBody = `
+      if (showFeaturedImage) {
+        listBody = `
+      <div className="space-y-8">
+        {posts.map((post) => (
+          <a key={post.frontmatter.slug} href={\`/templates/${t.id}/\${post.frontmatter.slug}\`} className="block group">
+            <div className="flex items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between">
+                  <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">{post.frontmatter.title}</h2>
+                  <span className="text-sm opacity-50 shrink-0 ml-4">{post.frontmatter.date}</span>
+                </div>
+                <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>${t.showReadingTime ? '\n                <div className="text-xs opacity-50 mt-1"><ReadingTime content={post.content} /></div>' : ""}${t.showTags ? `\n                <div className="mt-2"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}
+              </div>
+              {post.frontmatter.coverImage ? (
+                <div className="hidden sm:block w-32 shrink-0 aspect-video ${imagePlaceholder} overflow-hidden rounded border ${t.borderClass}">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={post.frontmatter.coverImage} alt="" className="w-full h-full object-cover" />
+                </div>
+              ) : null}
+            </div>
+          </a>
+        ))}
+      </div>`;
+      } else {
+        listBody = `
       <div className="space-y-8">
         {posts.map((post) => (
           <a key={post.frontmatter.slug} href={\`/templates/${t.id}/\${post.frontmatter.slug}\`} className="block group">
@@ -249,10 +319,11 @@ function generateArticleList(t: TemplateDef): string {
               <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">{post.frontmatter.title}</h2>
               <span className="text-sm opacity-50 shrink-0 ml-4">{post.frontmatter.date}</span>
             </div>
-            <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>${t.showReadingTime ? '\n            <div className="text-xs opacity-50 mt-1"><ReadingTime content={post.content} /></div>' : ""}${t.showTags ? '\n            <div className="mt-2"><TagList tags={post.frontmatter.tags} /></div>' : ""}
+            <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>${t.showReadingTime ? '\n            <div className="text-xs opacity-50 mt-1"><ReadingTime content={post.content} /></div>' : ""}${t.showTags ? `\n            <div className="mt-2"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}
           </a>
         ))}
       </div>`;
+      }
       break;
   }
 
@@ -261,7 +332,7 @@ function generateArticleList(t: TemplateDef): string {
 export default function ArticleList({ posts }: { posts: Post[] }) {
   return (
     <div>${t.showBreadcrumbs ? '\n      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles" }]} />' : ""}
-      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>${listBody}${t.showNewsletter ? "\n      <NewsletterCTA />" : ""}
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>${listBody}${t.showNewsletter ? `\n      <NewsletterCTA variant="${newsletterVariant}" />` : ""}
     </div>
   );
 }
@@ -279,25 +350,44 @@ function generateArticlePage(t: TemplateDef): string {
   if (t.showProgressBar) imports.push('import { ProgressBar } from "@/components/shared/ProgressBar";');
   if (t.showBreadcrumbs) imports.push('import { Breadcrumbs } from "@/components/shared/Breadcrumbs";');
   if (t.showNewsletter) imports.push('import { NewsletterCTA } from "@/components/shared/NewsletterCTA";');
+  if (t.showToc) imports.push('import { getTableOfContents } from "@/lib/toc";');
+  if (t.showToc) imports.push('import { TableOfContents } from "@/components/shared/TableOfContents";');
+
+  const showFeaturedImage = templatesWithFeaturedImage.has(t.id);
+  const tagVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
+  const newsletterVariant = t.hasDarkBg ? "dark" : "light";
+  const tocVariant = t.hasDarkBg ? "dark" : "light";
 
   return `${imports.join("\n")}
 
 export default function ArticlePage({ post }: { post: Post }) {
+  ${t.showToc ? "const toc = getTableOfContents(post.content);\n\n  " : ""}
   return (
     <div>
       <article>${t.showProgressBar ? "\n              <ProgressBar />" : ""}${t.showBreadcrumbs ? '\n              <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles", href: "/" }, { label: post.frontmatter.title }]} />' : ""}
-              
+              ${showFeaturedImage ? `
+              {post.frontmatter.coverImage ? (
+                <div className="mb-8 aspect-video overflow-hidden rounded-lg border ${t.borderClass}">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={post.frontmatter.coverImage}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : null}` : ""}
+
               <h1 className="${t.headingFont} text-4xl font-bold mb-4">{post.frontmatter.title}</h1>
               <div className="flex items-center gap-3 text-sm opacity-60 mb-8">
                 <span>{post.frontmatter.date}</span>
                 <span>&middot;</span>
                 <span>{post.frontmatter.author}</span>${t.showReadingTime ? '\n                <span>&middot;</span><ReadingTime content={post.content} />' : ""}
-              </div>${t.showTags ? '\n              <div className="mb-6"><TagList tags={post.frontmatter.tags} /></div>' : ""}
+              </div>${t.showTags ? `\n              <div className="mb-6"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}${t.showToc ? `\n              <TableOfContents items={toc} variant="${tocVariant}" />` : ""}
               
               <div className="prose ${t.hasDarkBg ? "prose-invert" : ""} max-w-none ${t.bodyFont}">
                 <MarkdownRenderer source={post.content} />
               </div>
-              ${t.showNewsletter ? "\n              <NewsletterCTA />" : ""}${t.showAuthorBio ? '\n              <AuthorBio author={post.frontmatter.author} />' : ""}
+              ${t.showNewsletter ? `\n              <NewsletterCTA variant="${newsletterVariant}" />` : ""}${t.showAuthorBio ? '\n              <AuthorBio author={post.frontmatter.author} />' : ""}
           </article>
     </div>
   );

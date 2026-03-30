@@ -1,5 +1,6 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
 
 const components = {
   h1: (props: React.ComponentProps<"h1">) => (
@@ -65,7 +66,7 @@ export function MarkdownRenderer({ source }: { source: string }) {
   return (
     <MDXRemote
       source={source}
-      options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+      options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }}
       components={components}
     />
   );

@@ -5,7 +5,7 @@ date: "2026-03-15"
 excerpt: "A comprehensive guide to modern React patterns using hooks for state management, side effects, and custom abstractions."
 author: "CapyCMS Team"
 tags: ["react", "hooks", "tutorial"]
-coverImage: "/images/demo-cover.jpg"
+coverImage: "/images/demo-cover-1.svg"
 ---
 
 # Getting Started with React Hooks
