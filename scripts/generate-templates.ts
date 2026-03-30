@@ -810,6 +810,174 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
 `;
   }
 
+  if (t.id === "landing-blog") {
+    return `import { Post } from "@/lib/types";
+import { NewsletterCTA } from "@/components/shared/NewsletterCTA";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const [featured, ...rest] = posts;
+
+  return (
+    <div>
+      <div className="rounded-xl border ${t.borderClass} ${t.cardBg} p-8 mb-10">
+        <h1 className="${t.headingFont} text-4xl md:text-5xl font-bold">
+          Landing Blog
+        </h1>
+        <p className="mt-4 text-lg opacity-70 max-w-2xl">
+          A clean landing page with a featured article, a strong CTA, and a newsletter.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          {featured ? (
+            <a
+              href={"/templates/${t.id}/" + featured.frontmatter.slug}
+              className="px-4 py-2 rounded bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600"
+            >
+              Read featured
+            </a>
+          ) : null}
+          <a
+            href="#articles"
+            className="px-4 py-2 rounded border ${t.borderClass} text-sm font-medium hover:bg-black/5"
+          >
+            Browse articles
+          </a>
+        </div>
+      </div>
+
+      {featured ? (
+        <a
+          href={"/templates/${t.id}/" + featured.frontmatter.slug}
+          className="block group mb-12"
+        >
+          <div className="grid md:grid-cols-2 rounded-xl border ${t.borderClass} overflow-hidden ${t.cardBg}">
+            <div className="aspect-video md:aspect-auto bg-gray-200">
+              {featured.frontmatter.coverImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={featured.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
+            </div>
+            <div className="p-8 flex flex-col justify-center">
+              <p className="text-xs uppercase tracking-widest ${t.accentClass}">Featured</p>
+              <h2 className="${t.headingFont} text-3xl font-bold mt-3 group-hover:underline">
+                {featured.frontmatter.title}
+              </h2>
+              <p className="mt-4 opacity-70">{featured.frontmatter.excerpt}</p>
+              <p className="mt-6 text-sm opacity-60">
+                {featured.frontmatter.date} &middot; {featured.frontmatter.author}
+              </p>
+            </div>
+          </div>
+        </a>
+      ) : null}
+
+      <div id="articles" className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {rest.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group rounded-lg border ${t.borderClass} ${t.cardBg} overflow-hidden hover:shadow-md transition-shadow"
+          >
+            {post.frontmatter.coverImage ? (
+              <div className="aspect-video bg-gray-200 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}
+            <div className="p-6">
+              <h3 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                {post.frontmatter.title}
+              </h3>
+              <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
+              <p className="opacity-70 mt-2">{post.frontmatter.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <NewsletterCTA variant="light" />
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "resource-hub") {
+    return `"use client";
+
+import { useMemo, useState } from "react";
+import { Post } from "@/lib/types";
+import { TagList } from "@/components/shared/TagList";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return posts;
+    return posts.filter((p) => {
+      const inTitle = p.frontmatter.title.toLowerCase().includes(q);
+      const inExcerpt = p.frontmatter.excerpt.toLowerCase().includes(q);
+      const inTags = p.frontmatter.tags.some((t) => t.toLowerCase().includes(q));
+      return inTitle || inExcerpt || inTags;
+    });
+  }, [posts, query]);
+
+  return (
+    <div>
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="${t.headingFont} text-3xl font-bold">Resources</h1>
+          <p className="text-sm opacity-70 mt-1">
+            Search across titles, excerpts, and tags.
+          </p>
+        </div>
+        <div className="w-full md:w-80">
+          <label className="text-xs uppercase tracking-widest opacity-60">Search</label>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Type to filter…"
+            className="mt-2 w-full rounded border ${t.borderClass} bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black/10"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filtered.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group ${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow"
+          >
+            <div className="p-4">
+              <h2 className="${t.headingFont} text-lg font-bold group-hover:underline">{post.frontmatter.title}</h2>
+              <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
+              <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>
+              <div className="mt-3">
+                <TagList tags={post.frontmatter.tags} />
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="text-sm opacity-70 mt-10">No results.</p>
+      ) : null}
+    </div>
+  );
+}
+`;
+  }
+
   if (t.id === "timeline-digest") {
     return `import { Post } from "@/lib/types";
 
@@ -1349,6 +1517,47 @@ export default function ArticlePage({ post }: { post: Post }) {
         <div className="prose max-w-none ${t.bodyFont}">
           <MarkdownRenderer source={post.content} variant="wiki" />
         </div>
+      </article>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "thought-leader") {
+    return `import { Post } from "@/lib/types";
+import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";
+import { AuthorBio } from "@/components/shared/AuthorBio";
+import { NewsletterCTA } from "@/components/shared/NewsletterCTA";
+import { RelatedPosts } from "@/components/shared/RelatedPosts";
+import { getAllPosts } from "@/lib/posts";
+
+export default function ArticlePage({ post }: { post: Post }) {
+  const allPosts = getAllPosts().filter((p) => p.frontmatter.slug !== post.frontmatter.slug);
+  const tags = post.frontmatter.tags;
+  const relatedByTags = tags.length
+    ? allPosts.filter((p) => p.frontmatter.tags.some((tag) => tags.includes(tag)))
+    : [];
+  const related = (relatedByTags.length ? relatedByTags : allPosts).slice(0, 3);
+
+  return (
+    <div>
+      <article>
+        <h1 className="${t.headingFont} text-4xl font-bold mb-4">{post.frontmatter.title}</h1>
+        <div className="flex items-center gap-3 text-sm opacity-60 mb-6">
+          <span>{post.frontmatter.date}</span>
+          <span>&middot;</span>
+          <span>{post.frontmatter.author}</span>
+        </div>
+
+        <AuthorBio author={post.frontmatter.author} variant="corporate" />
+
+        <div className="prose max-w-none ${t.bodyFont}">
+          <MarkdownRenderer source={post.content} variant="light" />
+        </div>
+
+        <RelatedPosts posts={related} variant="light" />
+        <NewsletterCTA variant="light" />
       </article>
     </div>
   );
