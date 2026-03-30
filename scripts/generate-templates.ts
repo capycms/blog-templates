@@ -189,7 +189,42 @@ function generateLayout(t: TemplateDef): string {
             </div>
           </aside>`;
 
-  const sidebarContent = t.id === "newspaper-classic" ? newspaperSidebarContent : defaultSidebarContent;
+  const publicationDarkSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Issue 01</p>
+                <h3 className="${t.headingFont} font-bold mt-2">Also read</h3>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started with React Hooks
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/vite-vs-nextjs" className="hover:underline">
+                      Vite vs Next.js
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential React Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <p className="text-xs opacity-70">${t.name} template</p>
+              </div>
+            </div>
+          </aside>`;
+
+  const sidebarContent =
+    t.id === "newspaper-classic"
+      ? newspaperSidebarContent
+      : t.id === "publication-dark"
+        ? publicationDarkSidebarContent
+        : defaultSidebarContent;
 
   let mainContent: string;
   if (t.layout === "sidebar-right") {
@@ -232,6 +267,150 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 }
 
 function generateArticleList(t: TemplateDef): string {
+  if (t.id === "journal-split") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const [featured, ...rest] = posts;
+
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Journal</h1>
+
+      {featured ? (
+        <a
+          href={"/templates/${t.id}/" + featured.frontmatter.slug}
+          className="block group mb-10"
+        >
+          <div className="${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden grid md:grid-cols-2">
+            <div className="aspect-video md:aspect-auto bg-stone-200">
+              {featured.frontmatter.coverImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={featured.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
+            </div>
+            <div className="p-6">
+              <p className="text-xs uppercase tracking-widest opacity-60 mb-2">Featured</p>
+              <h2 className="${t.headingFont} text-3xl font-bold group-hover:underline">
+                {featured.frontmatter.title}
+              </h2>
+              <p className="mt-3 opacity-70">{featured.frontmatter.excerpt}</p>
+              <p className="mt-6 text-sm opacity-60">
+                {featured.frontmatter.date} &middot; {featured.frontmatter.author}
+              </p>
+            </div>
+          </div>
+        </a>
+      ) : null}
+
+      <div className="space-y-6">
+        {rest.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between">
+                  <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                    {post.frontmatter.title}
+                  </h2>
+                  <span className="text-sm opacity-50 shrink-0 ml-4">{post.frontmatter.date}</span>
+                </div>
+                <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>
+              </div>
+              {post.frontmatter.coverImage ? (
+                <div className="hidden sm:block w-40 shrink-0 aspect-video bg-stone-200 overflow-hidden rounded border ${t.borderClass}">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={post.frontmatter.coverImage} alt="" className="w-full h-full object-cover" />
+                </div>
+              ) : null}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "folio-editorial") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const [featured, ...rest] = posts;
+
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+
+      {featured ? (
+        <a
+          href={"/templates/${t.id}/" + featured.frontmatter.slug}
+          className="block group mb-10"
+        >
+          <div className="${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden">
+            {featured.frontmatter.coverImage ? (
+              <div className="aspect-video bg-amber-100 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={featured.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}
+            <div className="p-6">
+              <p className="text-xs uppercase tracking-widest opacity-60 mb-2">Featured</p>
+              <h2 className="${t.headingFont} text-3xl font-bold group-hover:underline">
+                {featured.frontmatter.title}
+              </h2>
+              <p className="mt-3 opacity-70">{featured.frontmatter.excerpt}</p>
+              <p className="mt-6 text-sm opacity-60">
+                {featured.frontmatter.date} &middot; {featured.frontmatter.author}
+              </p>
+            </div>
+          </div>
+        </a>
+      ) : null}
+
+      {rest.length ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {rest.map((post) => (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className="block group ${t.cardBg} rounded-lg border ${t.borderClass} overflow-hidden hover:shadow-md transition-shadow"
+            >
+              {post.frontmatter.coverImage ? (
+                <div className="aspect-video bg-amber-100 overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={post.frontmatter.coverImage} alt="" className="w-full h-full object-cover" />
+                </div>
+              ) : null}
+              <div className="p-5">
+                <h3 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                  {post.frontmatter.title}
+                </h3>
+                <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
+                <p className="opacity-70 mt-2">{post.frontmatter.excerpt}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+`;
+  }
+
   if (t.id === "one-column-light") {
     return `"use client";
 
@@ -488,6 +667,8 @@ function generateArticlePage(t: TemplateDef): string {
   if (t.showNewsletter) imports.push('import { NewsletterCTA } from "@/components/shared/NewsletterCTA";');
   if (t.showToc) imports.push('import { getTableOfContents } from "@/lib/toc";');
   if (t.showToc) imports.push('import { TableOfContents } from "@/components/shared/TableOfContents";');
+  if (t.showRelated) imports.push('import { getAllPosts } from "@/lib/posts";');
+  if (t.showRelated) imports.push('import { RelatedPosts } from "@/components/shared/RelatedPosts";');
 
   const showFeaturedImage = templatesWithFeaturedImage.has(t.id);
   const tagVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
@@ -495,11 +676,13 @@ function generateArticlePage(t: TemplateDef): string {
   const tocVariant = t.hasDarkBg ? "dark" : "light";
   const markdownVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
   const authorBioVariant = t.id === "silent-elegance" ? "elegant" : t.hasDarkBg ? "dark" : "light";
+  const relatedVariant = t.hasDarkBg ? "dark" : "light";
 
   return `${imports.join("\n")}
 
 export default function ArticlePage({ post }: { post: Post }) {
   ${t.showToc ? "const toc = getTableOfContents(post.content);\n\n  " : ""}
+  ${t.showRelated ? "const allPosts = getAllPosts().filter((p) => p.frontmatter.slug !== post.frontmatter.slug);\n  const tags = post.frontmatter.tags;\n  const relatedByTags = tags.length\n    ? allPosts.filter((p) => p.frontmatter.tags.some((tag) => tags.includes(tag)))\n    : [];\n  const related = (relatedByTags.length ? relatedByTags : allPosts).slice(0, 3);\n\n  " : ""}
   return (
     <div>
       <article>${t.showProgressBar ? "\n              <ProgressBar />" : ""}${t.showBreadcrumbs ? '\n              <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles", href: "/" }, { label: post.frontmatter.title }]} />' : ""}
@@ -525,6 +708,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose ${t.hasDarkBg ? "prose-invert" : ""} max-w-none ${t.bodyFont}">
                 <MarkdownRenderer source={post.content} variant="${markdownVariant}" />
               </div>
+              ${t.showRelated ? `\n              <RelatedPosts posts={related} variant="${relatedVariant}" />` : ""}
                 ${t.showNewsletter ? `\n              <NewsletterCTA variant="${newsletterVariant}" />` : ""}${t.showAuthorBio ? `\n              <AuthorBio author={post.frontmatter.author} variant="${authorBioVariant}" />` : ""}
           </article>
     </div>

@@ -15,9 +15,31 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
       <main className="max-w-6xl mx-auto px-6 py-8 flex gap-8">
         <div className="flex-1 min-w-0">{children}</div>
           <aside className="w-64 shrink-0 hidden lg:block">
-            <div className="sticky top-8 bg-gray-900 border-gray-800 border rounded-lg p-4">
-              <h3 className="font-serif font-bold mb-2">About</h3>
-              <p className="text-sm opacity-70">Publication Dark template</p>
+            <div className="sticky top-8 bg-gray-900 border-gray-800 border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest text-rose-400">Issue 01</p>
+                <h3 className="font-serif font-bold mt-2">Also read</h3>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/publication-dark/getting-started" className="hover:underline">
+                      Getting Started with React Hooks
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/publication-dark/vite-vs-nextjs" className="hover:underline">
+                      Vite vs Next.js
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/publication-dark/essential-libraries" className="hover:underline">
+                      Essential React Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="border-t border-gray-800 p-4">
+                <p className="text-xs opacity-70">Publication Dark template</p>
+              </div>
             </div>
           </aside>
       </main>

@@ -7,6 +7,7 @@ export default function ArticlePage({ post }: { post: Post }) {
   const toc = getTableOfContents(post.content);
 
   
+  
   return (
     <div>
       <article>
@@ -23,6 +24,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose  max-w-none font-sans">
                 <MarkdownRenderer source={post.content} variant="light" />
               </div>
+              
                 
           </article>
     </div>

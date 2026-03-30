@@ -5,6 +5,7 @@ import { NewsletterCTA } from "@/components/shared/NewsletterCTA";
 
 export default function ArticlePage({ post }: { post: Post }) {
   
+  
   return (
     <div>
       <article>
@@ -21,6 +22,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose prose-invert max-w-none font-serif">
                 <MarkdownRenderer source={post.content} variant="dark" />
               </div>
+              
                 
               <NewsletterCTA variant="dark" />
           </article>

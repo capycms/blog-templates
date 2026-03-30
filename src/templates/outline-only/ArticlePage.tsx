@@ -4,6 +4,7 @@ import { TagList } from "@/components/shared/TagList";
 
 export default function ArticlePage({ post }: { post: Post }) {
   
+  
   return (
     <div>
       <article>
@@ -20,6 +21,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose  max-w-none font-sans">
                 <MarkdownRenderer source={post.content} variant="outline" />
               </div>
+              
                 
           </article>
     </div>

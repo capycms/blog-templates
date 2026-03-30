@@ -1,7 +1,17 @@
 import { Post } from "@/lib/types";
 import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";
+import { getAllPosts } from "@/lib/posts";
+import { RelatedPosts } from "@/components/shared/RelatedPosts";
 
 export default function ArticlePage({ post }: { post: Post }) {
+  
+  const allPosts = getAllPosts().filter((p) => p.frontmatter.slug !== post.frontmatter.slug);
+  const tags = post.frontmatter.tags;
+  const relatedByTags = tags.length
+    ? allPosts.filter((p) => p.frontmatter.tags.some((tag) => tags.includes(tag)))
+    : [];
+  const related = (relatedByTags.length ? relatedByTags : allPosts).slice(0, 3);
+
   
   return (
     <div>
@@ -28,6 +38,8 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose prose-invert max-w-none font-serif">
                 <MarkdownRenderer source={post.content} variant="dark" />
               </div>
+              
+              <RelatedPosts posts={related} variant="dark" />
                 
           </article>
     </div>

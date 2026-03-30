@@ -4,6 +4,7 @@ import { AuthorBio } from "@/components/shared/AuthorBio";
 
 export default function ArticlePage({ post }: { post: Post }) {
   
+  
   return (
     <div>
       <article>
@@ -19,6 +20,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose  max-w-none font-sans">
                 <MarkdownRenderer source={post.content} variant="light" />
               </div>
+              
                 
               <AuthorBio author={post.frontmatter.author} variant="light" />
           </article>
