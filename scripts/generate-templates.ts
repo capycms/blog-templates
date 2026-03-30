@@ -143,13 +143,53 @@ export const config: TemplateConfig = {
 }
 
 function generateLayout(t: TemplateDef): string {
-  const sidebarContent = `
+  const defaultSidebarContent = `
           <aside className="w-64 shrink-0 hidden lg:block">
             <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg p-4">
               <h3 className="${t.headingFont} font-bold mb-2">About</h3>
               <p className="text-sm opacity-70">${t.name} template</p>
             </div>
           </aside>`;
+
+  const newspaperSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">In this issue</h3>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started with React Hooks
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/vite-vs-nextjs" className="hover:underline">
+                      Vite vs Next.js
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential React Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">Sections</h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">React</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">Next.js</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">Tooling</span>
+                </div>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">About</h3>
+                <p className="text-xs opacity-70 mt-2">${t.name} template</p>
+              </div>
+            </div>
+          </aside>`;
+
+  const sidebarContent = t.id === "newspaper-classic" ? newspaperSidebarContent : defaultSidebarContent;
 
   let mainContent: string;
   if (t.layout === "sidebar-right") {
@@ -454,6 +494,7 @@ function generateArticlePage(t: TemplateDef): string {
   const newsletterVariant = t.hasDarkBg ? "dark" : "light";
   const tocVariant = t.hasDarkBg ? "dark" : "light";
   const markdownVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
+  const authorBioVariant = t.id === "silent-elegance" ? "elegant" : t.hasDarkBg ? "dark" : "light";
 
   return `${imports.join("\n")}
 
@@ -484,7 +525,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose ${t.hasDarkBg ? "prose-invert" : ""} max-w-none ${t.bodyFont}">
                 <MarkdownRenderer source={post.content} variant="${markdownVariant}" />
               </div>
-              ${t.showNewsletter ? `\n              <NewsletterCTA variant="${newsletterVariant}" />` : ""}${t.showAuthorBio ? '\n              <AuthorBio author={post.frontmatter.author} />' : ""}
+                ${t.showNewsletter ? `\n              <NewsletterCTA variant="${newsletterVariant}" />` : ""}${t.showAuthorBio ? `\n              <AuthorBio author={post.frontmatter.author} variant="${authorBioVariant}" />` : ""}
           </article>
     </div>
   );

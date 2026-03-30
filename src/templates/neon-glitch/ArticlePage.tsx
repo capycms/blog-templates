@@ -18,7 +18,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose prose-invert max-w-none font-mono">
                 <MarkdownRenderer source={post.content} variant="dark" />
               </div>
-              
+                
           </article>
     </div>
   );

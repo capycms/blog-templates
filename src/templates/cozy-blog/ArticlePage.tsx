@@ -19,8 +19,8 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose  max-w-none font-serif">
                 <MarkdownRenderer source={post.content} variant="light" />
               </div>
-              
-              <AuthorBio author={post.frontmatter.author} />
+                
+              <AuthorBio author={post.frontmatter.author} variant="light" />
           </article>
     </div>
   );

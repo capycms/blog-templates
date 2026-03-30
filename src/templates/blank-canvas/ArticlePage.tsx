@@ -20,7 +20,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               <div className="prose  max-w-none font-serif">
                 <MarkdownRenderer source={post.content} variant="light" />
               </div>
-              
+                
           </article>
     </div>
   );
