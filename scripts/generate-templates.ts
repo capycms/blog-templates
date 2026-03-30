@@ -249,6 +249,69 @@ function generateLayout(t: TemplateDef): string {
             </div>
           </aside>`;
 
+  const corporateMinimalSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">Company</h3>
+                <p className="mt-2 text-sm opacity-70">CapyCMS Insights — product, engineering, and growth.</p>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">Latest</h3>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/vite-vs-nextjs" className="hover:underline">
+                      Vite vs Next.js
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">Topics</h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">Product</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">Engineering</span>
+                  <span className="text-xs px-2 py-1 rounded-full border ${t.borderClass}">Strategy</span>
+                </div>
+              </div>
+            </div>
+          </aside>`;
+
+  const executiveBriefSidebarContent = `
+          <aside className="w-64 shrink-0 hidden lg:block">
+            <div className="sticky top-8 ${t.cardBg} ${t.borderClass} border rounded-lg overflow-hidden">
+              <div className="p-4">
+                <p className="text-xs uppercase tracking-widest ${t.accentClass}">Executive Brief</p>
+                <p className="mt-2 text-sm opacity-70">Short, decision-ready notes for busy teams.</p>
+              </div>
+              <div className="border-t ${t.borderClass} p-4">
+                <h3 className="text-xs uppercase tracking-widest ${t.accentClass}">Read next</h3>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a href="/templates/${t.id}/getting-started" className="hover:underline">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/templates/${t.id}/essential-libraries" className="hover:underline">
+                      Essential Libraries
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>`;
+
   const sidebarContent =
     t.id === "newspaper-classic"
       ? newspaperSidebarContent
@@ -256,6 +319,10 @@ function generateLayout(t: TemplateDef): string {
         ? publicationDarkSidebarContent
         : t.id === "rust-inspired"
           ? rustInspiredSidebarContent
+          : t.id === "corporate-minimal"
+            ? corporateMinimalSidebarContent
+            : t.id === "executive-brief"
+              ? executiveBriefSidebarContent
         : defaultSidebarContent;
 
   const centeredChildren =
@@ -566,6 +633,177 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
           </a>
         ))}
       </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "neon-glitch") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="space-y-6">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="rounded-lg border ${t.borderClass} ${t.cardBg} overflow-hidden hover:shadow-md transition-shadow">
+              <div className="flex">
+                <div className="w-1 bg-cyan-400" />
+                <div className="w-1 bg-fuchsia-500/80" />
+                <div className="flex-1 p-6">
+                  <p className="text-xs uppercase tracking-widest opacity-70">{post.frontmatter.date}</p>
+                  <h2 className="${t.headingFont} text-2xl font-bold mt-2 group-hover:underline">
+                    {post.frontmatter.title}
+                  </h2>
+                  <p className="mt-3 text-sm opacity-70">{post.frontmatter.excerpt}</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "gradient-expressive") {
+    return `import { Post } from "@/lib/types";
+
+const gradients = [
+  "from-pink-400 to-sky-400",
+  "from-amber-400 to-fuchsia-400",
+  "from-emerald-400 to-sky-400",
+];
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="space-y-6">
+        {posts.map((post, i) => {
+          const g = gradients[i % gradients.length];
+          return (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className="block group"
+            >
+              <div className="rounded-xl overflow-hidden border ${t.borderClass} ${t.cardBg} hover:shadow-md transition-shadow">
+                <div className={"h-2 bg-gradient-to-r " + g} />
+                <div className="p-7">
+                  <p className="text-xs opacity-60">{post.frontmatter.date}</p>
+                  <h2 className="${t.headingFont} text-2xl font-bold mt-2 group-hover:underline">
+                    {post.frontmatter.title}
+                  </h2>
+                  <p className="mt-4 opacity-70">{post.frontmatter.excerpt}</p>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "retro-70s") {
+    return `import { Post } from "@/lib/types";
+import { TagList } from "@/components/shared/TagList";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {posts.map((post, i) => {
+          const rot = i % 2 === 1 ? "-rotate-1" : "rotate-1";
+          return (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className="block group"
+            >
+              <div
+                className={
+                  "rounded-lg border ${t.borderClass} bg-yellow-50 p-6 hover:shadow-md transition-shadow " +
+                  rot
+                }
+              >
+                <div className="bg-white border ${t.borderClass} rounded p-3">
+                  <div className="aspect-video bg-orange-100 overflow-hidden rounded">
+                    {post.frontmatter.coverImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={post.frontmatter.coverImage}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <p className="text-xs uppercase tracking-widest opacity-60">{post.frontmatter.date}</p>
+                  <h2 className="${t.headingFont} text-2xl font-bold mt-2 group-hover:underline">
+                    {post.frontmatter.title}
+                  </h2>
+                  <p className="mt-3 opacity-70">{post.frontmatter.excerpt}</p>
+                  <div className="mt-4">
+                    <TagList tags={post.frontmatter.tags} />
+                  </div>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "executive-brief") {
+    return `import { Post } from "@/lib/types";
+import { NewsletterCTA } from "@/components/shared/NewsletterCTA";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Executive Brief</h1>
+      <div className="space-y-6">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="${t.cardBg} rounded-lg border ${t.borderClass} p-6 hover:shadow-md transition-shadow">
+              <p className="text-xs uppercase tracking-widest ${t.accentClass}">Executive Summary</p>
+              <h2 className="${t.headingFont} text-2xl font-bold mt-2 group-hover:underline">
+                {post.frontmatter.title}
+              </h2>
+              <div className="mt-4 rounded border ${t.borderClass} bg-gray-50 p-4">
+                <p className="text-sm opacity-70">{post.frontmatter.excerpt}</p>
+              </div>
+              <p className="mt-4 text-sm opacity-60">
+                {post.frontmatter.date} &middot; {post.frontmatter.author}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <NewsletterCTA variant="light" />
     </div>
   );
 }
@@ -1151,7 +1389,14 @@ export default function ArticlePage({ post }: { post: Post }) {
             : t.hasDarkBg
               ? "dark"
               : "light";
-  const authorBioVariant = t.id === "silent-elegance" ? "elegant" : t.hasDarkBg ? "dark" : "light";
+  const authorBioVariant =
+    t.id === "silent-elegance"
+      ? "elegant"
+      : t.id === "corporate-minimal"
+        ? "corporate"
+        : t.hasDarkBg
+          ? "dark"
+          : "light";
   const relatedVariant = t.hasDarkBg ? "dark" : "light";
   const progressBarProps = t.id === "dark-minimal-code" ? ' barClassName="bg-violet-400"' : "";
 

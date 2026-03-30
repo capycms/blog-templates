@@ -3,27 +3,34 @@ export function AuthorBio({
   variant = "light",
 }: {
   author: string;
-  variant?: "light" | "dark" | "elegant";
+  variant?: "light" | "dark" | "elegant" | "corporate";
 }) {
   const isDark = variant === "dark";
   const isElegant = variant === "elegant";
+  const isCorporate = variant === "corporate";
 
   const borderClass = isDark
     ? "border-white/10"
     : isElegant
       ? "border-amber-200"
+      : isCorporate
+        ? "border-blue-200"
       : "border-gray-200";
 
   const avatarClass = isDark
     ? "bg-white/10 text-white/80 border border-white/10"
     : isElegant
       ? "bg-amber-50 text-amber-700 border border-amber-200"
+      : isCorporate
+        ? "bg-blue-50 text-blue-700 border border-blue-200"
       : "bg-gray-200 text-gray-700";
 
   const roleClass = isDark
     ? "text-white/60"
     : isElegant
       ? "text-amber-700/70"
+      : isCorporate
+        ? "text-blue-900/60"
       : "opacity-60";
 
   return (

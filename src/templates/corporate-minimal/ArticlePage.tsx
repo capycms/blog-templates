@@ -25,7 +25,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               </div>
               
                 
-              <AuthorBio author={post.frontmatter.author} variant="light" />
+              <AuthorBio author={post.frontmatter.author} variant="corporate" />
           </article>
     </div>
   );
