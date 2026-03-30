@@ -24,7 +24,7 @@ export default function ArticlePage({ post }: { post: Post }) {
           <TableOfContents items={toc} variant="light" />
         </div>
         <div className="prose max-w-none font-sans">
-          <MarkdownRenderer source={post.content} variant="wiki" />
+          <MarkdownRenderer source={post.content} variant="wiki" syntaxHighlight />
         </div>
       </article>
     </div>

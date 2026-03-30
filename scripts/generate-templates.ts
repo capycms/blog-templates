@@ -1845,7 +1845,7 @@ export default function ArticlePage({ post }: { post: Post }) {
           <TableOfContents items={toc} variant="light" />
         </div>
         <div className="prose max-w-none ${t.bodyFont}">
-          <MarkdownRenderer source={post.content} variant="wiki" />
+          <MarkdownRenderer source={post.content} variant="wiki" syntaxHighlight />
         </div>
       </article>
     </div>
@@ -1978,7 +1978,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               ${t.showTags ? `\n              <div className="mb-6"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}${t.showToc ? `\n              <TableOfContents items={toc} variant="${tocVariant}" />` : ""}
               
               <div className="prose ${t.hasDarkBg ? "prose-invert" : ""} max-w-none ${t.bodyFont}">
-                <MarkdownRenderer source={post.content} variant="${markdownVariant}" />
+                <MarkdownRenderer source={post.content} variant="${markdownVariant}"${t.category === "developer" ? " syntaxHighlight" : ""} />
               </div>
               ${t.showRelated ? `\n              <RelatedPosts posts={related} variant="${relatedVariant}" />` : ""}
                 ${t.showNewsletter ? `\n              <NewsletterCTA variant="${newsletterVariant}" />` : ""}${t.showAuthorBio ? `\n              <AuthorBio author={post.frontmatter.author} variant="${authorBioVariant}" />` : ""}

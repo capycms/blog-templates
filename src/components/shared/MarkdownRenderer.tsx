@@ -1,6 +1,7 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import rehypePrettyCode from "rehype-pretty-code";
 
 type MarkdownVariant = "light" | "dark" | "outline" | "terminal" | "wiki" | "neon";
 
@@ -166,14 +167,27 @@ function getComponents(variant: MarkdownVariant) {
 export function MarkdownRenderer({
   source,
   variant = "light",
+  syntaxHighlight,
 }: {
   source: string;
   variant?: MarkdownVariant;
+  syntaxHighlight?: boolean;
 }) {
+  const isLightVariant = variant === "light" || variant === "wiki" || variant === "outline";
+  const shikiTheme = isLightVariant ? "github-light" : "github-dark";
+
+  const rehypePlugins: any[] = [rehypeSlug];
+  if (syntaxHighlight) {
+    rehypePlugins.push([
+      rehypePrettyCode,
+      { theme: shikiTheme, keepBackground: false, bypassInlineCode: true },
+    ]);
+  }
+
   return (
     <MDXRemote
       source={source}
-      options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }}
+      options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins } }}
       components={getComponents(variant)}
     />
   );
