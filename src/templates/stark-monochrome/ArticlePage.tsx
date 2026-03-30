@@ -22,7 +22,7 @@ export default function ArticlePage({ post }: { post: Post }) {
               
               
               <div className="prose  max-w-none font-sans">
-                <MarkdownRenderer source={post.content} variant="light" />
+                <MarkdownRenderer source={post.content} variant="outline" />
               </div>
               
                 

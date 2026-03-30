@@ -67,7 +67,7 @@ const templates: TemplateDef[] = [
   { id: "brutalist-art", name: "Brutalist Art", category: "creative", bgClass: "bg-white", textClass: "text-black", accentClass: "text-black", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-black", layout: "full-width", maxWidth: "max-w-4xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "pastel-dream", name: "Pastel Dream", category: "creative", bgClass: "bg-purple-50", textClass: "text-purple-900", accentClass: "text-purple-400", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-white", borderClass: "border-purple-200", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "split-visual", name: "Split Visual", category: "creative", bgClass: "bg-gray-100", textClass: "text-gray-900", accentClass: "text-teal-500", headingFont: "font-sans", bodyFont: "font-sans", cardBg: "bg-white", borderClass: "border-gray-300", layout: "split", maxWidth: "max-w-6xl", hasDarkBg: false, listStyle: "masonry", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
-  { id: "sketch-hand", name: "Sketch Hand", category: "creative", bgClass: "bg-amber-50", textClass: "text-amber-900", accentClass: "text-amber-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-amber-50", borderClass: "border-amber-300", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "sketch-hand", name: "Sketch Hand", category: "creative", bgClass: "bg-amber-50 bg-[url('/patterns/sketch.svg')] bg-repeat", textClass: "text-amber-900", accentClass: "text-amber-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-amber-50", borderClass: "border-amber-300 border-dashed", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "neon-glitch", name: "Neon Glitch", category: "creative", bgClass: "bg-black", textClass: "text-fuchsia-300", accentClass: "text-cyan-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-950", borderClass: "border-fuchsia-700", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "gradient-expressive", name: "Gradient Expressive", category: "creative", bgClass: "bg-gradient-to-br from-pink-100 to-sky-100", textClass: "text-gray-900", accentClass: "text-pink-600", headingFont: "font-serif", bodyFont: "font-sans", cardBg: "bg-white/80", borderClass: "border-pink-200", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "retro-70s", name: "Retro 70s", category: "creative", bgClass: "bg-yellow-100", textClass: "text-orange-900", accentClass: "text-orange-600", headingFont: "font-serif", bodyFont: "font-serif", cardBg: "bg-yellow-50", borderClass: "border-orange-300", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: false, listStyle: "cards", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
@@ -347,6 +347,224 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
             </a>
           );
         })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "asymmetric-bold") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl md:text-4xl font-bold mb-10">Articles</h1>
+      <div className="space-y-10">
+        {posts.map((post, i) => {
+          const isRight = i % 2 === 1;
+          return (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className={"block group " + (isRight ? "md:text-right" : "")}
+            >
+              <div
+                className={
+                  "rounded-lg border ${t.borderClass} ${t.cardBg} p-8 md:w-4/5 " +
+                  (isRight ? "md:ml-auto" : "md:mr-auto")
+                }
+              >
+                <div className="flex items-baseline justify-between gap-4 text-xs uppercase tracking-widest opacity-60">
+                  <span>{post.frontmatter.date}</span>
+                  <span>{post.frontmatter.author}</span>
+                </div>
+                <h2 className="${t.headingFont} text-3xl font-bold mt-3 group-hover:underline">
+                  {post.frontmatter.title}
+                </h2>
+                <div className="${t.accentClass} mt-4">
+                  <div className="h-1 w-14 bg-current" />
+                </div>
+                <p className="mt-4 opacity-70">{post.frontmatter.excerpt}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "brutalist-art") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-4xl md:text-5xl font-black uppercase tracking-tight mb-10">
+        ARTICLES
+      </h1>
+      <div className="space-y-6">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="border-2 ${t.borderClass} ${t.cardBg} p-6">
+              <div className="flex items-center justify-between text-xs uppercase tracking-widest">
+                <span>{post.frontmatter.date}</span>
+                <span>{post.frontmatter.author}</span>
+              </div>
+              <h2 className="${t.headingFont} text-2xl md:text-3xl font-black mt-4 group-hover:underline">
+                {post.frontmatter.title}
+              </h2>
+              <p className="mt-3 opacity-80">{post.frontmatter.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "pastel-dream") {
+    return `import { Post } from "@/lib/types";
+import { TagList } from "@/components/shared/TagList";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="space-y-6">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="rounded-2xl border ${t.borderClass} bg-white/70 backdrop-blur p-8 hover:shadow-md transition-shadow">
+              <p className="text-xs opacity-60">{post.frontmatter.date}</p>
+              <h2 className="${t.headingFont} text-2xl md:text-3xl font-bold mt-2 group-hover:underline">
+                {post.frontmatter.title}
+              </h2>
+              <p className="mt-4 opacity-70">{post.frontmatter.excerpt}</p>
+              <div className="mt-5">
+                <TagList tags={post.frontmatter.tags} />
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "split-visual") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const [featured, ...rest] = posts;
+
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Featured</h1>
+
+      {featured ? (
+        <a
+          href={"/templates/${t.id}/" + featured.frontmatter.slug}
+          className="block group mb-10"
+        >
+          <div className="grid md:grid-cols-2 rounded-lg border ${t.borderClass} overflow-hidden ${t.cardBg}">
+            <div className="aspect-video md:aspect-auto bg-gray-200">
+              {featured.frontmatter.coverImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={featured.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
+            </div>
+            <div className="p-8 flex flex-col justify-center">
+              <p className="text-xs uppercase tracking-widest ${t.accentClass}">Featured</p>
+              <h2 className="${t.headingFont} text-3xl md:text-4xl font-bold mt-3 group-hover:underline">
+                {featured.frontmatter.title}
+              </h2>
+              <p className="mt-4 opacity-70">{featured.frontmatter.excerpt}</p>
+              <p className="mt-6 text-sm opacity-60">
+                {featured.frontmatter.date} &middot; {featured.frontmatter.author}
+              </p>
+            </div>
+          </div>
+        </a>
+      ) : null}
+
+      <div className="columns-1 md:columns-2 lg:columns-3 [column-gap:1.5rem]">
+        {rest.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block break-inside-avoid mb-6 group rounded-lg border ${t.borderClass} overflow-hidden ${t.cardBg} hover:shadow-md transition-shadow"
+          >
+            {post.frontmatter.coverImage ? (
+              <div className="aspect-video bg-gray-200 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.frontmatter.coverImage}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}
+            <div className="p-4">
+              <h3 className="${t.headingFont} text-lg font-bold group-hover:underline">
+                {post.frontmatter.title}
+              </h3>
+              <p className="text-sm opacity-60 mt-1">{post.frontmatter.date}</p>
+              <p className="text-sm opacity-70 mt-2">{post.frontmatter.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "sketch-hand") {
+    return `import { Post } from "@/lib/types";
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Notes</h1>
+      <div className="space-y-5">
+        {posts.map((post) => (
+          <a
+            key={post.frontmatter.slug}
+            href={"/templates/${t.id}/" + post.frontmatter.slug}
+            className="block group"
+          >
+            <div className="rounded-lg border ${t.borderClass} ${t.cardBg} p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-baseline justify-between gap-4">
+                <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                  {post.frontmatter.title}
+                </h2>
+                <span className="text-xs opacity-60 shrink-0">{post.frontmatter.date}</span>
+              </div>
+              <p className="mt-2 text-sm opacity-70">{post.frontmatter.excerpt}</p>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   );
@@ -922,6 +1140,8 @@ export default function ArticlePage({ post }: { post: Post }) {
   const markdownVariant =
     t.id === "outline-only"
       ? "outline"
+      : t.id === "brutalist-art" || t.id === "stark-monochrome"
+        ? "outline"
       : t.id === "devlog-terminal" || t.id === "retro-terminal"
         ? "terminal"
         : t.id === "github-wiki" || t.id === "api-doc-style"
