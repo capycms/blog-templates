@@ -13,7 +13,7 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
               <span className="text-sm opacity-50 shrink-0 ml-4">{post.frontmatter.date}</span>
             </div>
             <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>
-            <div className="mt-2"><TagList tags={post.frontmatter.tags} variant="dark" /></div>
+            <div className="mt-2"><TagList tags={post.frontmatter.tags} variant="neon" /></div>
           </a>
         ))}
       </div>

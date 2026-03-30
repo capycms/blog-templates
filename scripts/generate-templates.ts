@@ -54,7 +54,7 @@ const templates: TemplateDef[] = [
   // DEVELOPER (8)
   { id: "devlog-terminal", name: "Devlog Terminal", category: "developer", bgClass: "bg-gray-950", textClass: "text-green-400", accentClass: "text-green-300", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-900", borderClass: "border-green-800", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "github-wiki", name: "GitHub Wiki", category: "developer", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-blue-600", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-gray-50", borderClass: "border-gray-300", layout: "sidebar-left", maxWidth: "max-w-6xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
-  { id: "hacker-neon", name: "Hacker Neon", category: "developer", bgClass: "bg-black", textClass: "text-cyan-300", accentClass: "text-magenta-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-950", borderClass: "border-cyan-800", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
+  { id: "hacker-neon", name: "Hacker Neon", category: "developer", bgClass: "bg-black", textClass: "text-cyan-300", accentClass: "text-fuchsia-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-950", borderClass: "border-cyan-800", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: true, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "code-blog", name: "Code Blog", category: "developer", bgClass: "bg-gray-900", textClass: "text-gray-200", accentClass: "text-yellow-400", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-gray-800", borderClass: "border-gray-700", layout: "centered", maxWidth: "max-w-3xl", hasDarkBg: true, listStyle: "list", showReadingTime: true, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
   { id: "api-doc-style", name: "API Doc Style", category: "developer", bgClass: "bg-white", textClass: "text-gray-800", accentClass: "text-blue-500", headingFont: "font-mono", bodyFont: "font-sans", cardBg: "bg-gray-50", borderClass: "border-gray-200", layout: "sidebar-left", maxWidth: "max-w-6xl", hasDarkBg: false, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: true, showRelated: false },
   { id: "retro-terminal", name: "Retro Terminal", category: "developer", bgClass: "bg-black", textClass: "text-green-500", accentClass: "text-green-300", headingFont: "font-mono", bodyFont: "font-mono", cardBg: "bg-black", borderClass: "border-green-900", layout: "centered", maxWidth: "max-w-2xl", hasDarkBg: true, listStyle: "list", showReadingTime: false, showAuthorBio: false, showTags: false, showNewsletter: false, showBreadcrumbs: false, showProgressBar: false, showToc: false, showRelated: false },
@@ -267,6 +267,121 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 }
 
 function generateArticleList(t: TemplateDef): string {
+  if (t.id === "timeline-digest") {
+    return `import { Post } from "@/lib/types";
+
+function formatMonthYear(isoDate: string) {
+  const d = new Date(isoDate);
+  const fmt = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" });
+  return fmt.format(d);
+}
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  const entries: Array<{ type: "heading"; label: string } | { type: "post"; post: Post }> = [];
+  let current = "";
+
+  for (const post of posts) {
+    const label = formatMonthYear(post.frontmatter.date);
+    if (label !== current) {
+      current = label;
+      entries.push({ type: "heading", label });
+    }
+    entries.push({ type: "post", post });
+  }
+
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Timeline</h1>
+      <div className="relative border-l-2 ${t.borderClass} ml-4 space-y-6 pl-8">
+        {entries.map((entry) =>
+          entry.type === "heading" ? (
+            <div key={entry.label} className="pt-6">
+              <div className="text-xs uppercase tracking-widest opacity-60">{entry.label}</div>
+            </div>
+          ) : (
+            <a
+              key={entry.post.frontmatter.slug}
+              href={"/templates/${t.id}/" + entry.post.frontmatter.slug}
+              className="block group relative"
+            >
+              <div className="absolute -left-10 top-1 w-4 h-4 rounded-full ${t.bgClass} border-2 ${t.borderClass}" />
+              <span className="text-xs opacity-50">{entry.post.frontmatter.date}</span>
+              <h2 className="${t.headingFont} text-lg font-bold group-hover:underline">
+                {entry.post.frontmatter.title}
+              </h2>
+              <p className="text-sm opacity-70 mt-1">{entry.post.frontmatter.excerpt}</p>
+              {entry.post.frontmatter.coverImage ? (
+                <div className="mt-3 max-w-sm aspect-video bg-gray-200 overflow-hidden rounded border ${t.borderClass}">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={entry.post.frontmatter.coverImage}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : null}
+            </a>
+          )
+        )}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
+  if (t.id === "code-blog") {
+    return `import { Post } from "@/lib/types";
+import { ReadingTime } from "@/components/shared/ReadingTime";
+
+function getComplexity(content: string) {
+  const fence = String.fromCharCode(96).repeat(3);
+  const fences = content.split(fence).length - 1;
+  const codeBlocks = Math.floor(fences / 2);
+  const score = codeBlocks * 2 + Math.round(content.length / 1200);
+  if (score <= 3) return "Low";
+  if (score <= 6) return "Medium";
+  return "High";
+}
+
+export default function ArticleList({ posts }: { posts: Post[] }) {
+  return (
+    <div>
+      <h1 className="${t.headingFont} text-3xl font-bold mb-8">Articles</h1>
+      <div className="space-y-8">
+        {posts.map((post) => {
+          const complexity = getComplexity(post.content);
+          return (
+            <a
+              key={post.frontmatter.slug}
+              href={"/templates/${t.id}/" + post.frontmatter.slug}
+              className="block group"
+            >
+              <div className="flex flex-wrap items-center gap-2 text-xs mb-2">
+                <span className="opacity-70">{post.frontmatter.date}</span>
+                <span>&middot;</span>
+                <span className="opacity-70">
+                  <ReadingTime content={post.content} />
+                </span>
+                <span>&middot;</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded border border-gray-700 text-yellow-300">
+                  Complexity: {complexity}
+                </span>
+              </div>
+              <h2 className="${t.headingFont} text-xl font-bold group-hover:underline">
+                {post.frontmatter.title}
+              </h2>
+              <p className="text-sm opacity-70 mt-1">{post.frontmatter.excerpt}</p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+`;
+  }
+
   if (t.id === "journal-split") {
     return `import { Post } from "@/lib/types";
 
@@ -490,7 +605,14 @@ export default function ArticleList({ posts }: { posts: Post[] }) {
   if (t.showNewsletter) imports.push('import { NewsletterCTA } from "@/components/shared/NewsletterCTA";');
 
   const showFeaturedImage = templatesWithFeaturedImage.has(t.id);
-  const tagVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
+  const tagVariant =
+    t.id === "outline-only"
+      ? "outline"
+      : t.id === "hacker-neon"
+        ? "neon"
+        : t.hasDarkBg
+          ? "dark"
+          : "light";
   const newsletterVariant = t.hasDarkBg ? "dark" : "light";
   const imagePlaceholder = t.hasDarkBg ? "bg-white/10" : "bg-gray-200";
 
@@ -674,15 +796,28 @@ function generateArticlePage(t: TemplateDef): string {
   const tagVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
   const newsletterVariant = t.hasDarkBg ? "dark" : "light";
   const tocVariant = t.hasDarkBg ? "dark" : "light";
-  const markdownVariant = t.id === "outline-only" ? "outline" : t.hasDarkBg ? "dark" : "light";
+  const markdownVariant =
+    t.id === "outline-only"
+      ? "outline"
+      : t.id === "devlog-terminal" || t.id === "retro-terminal"
+        ? "terminal"
+        : t.id === "github-wiki" || t.id === "api-doc-style"
+          ? "wiki"
+          : t.id === "hacker-neon" || t.id === "neon-glitch"
+            ? "neon"
+            : t.hasDarkBg
+              ? "dark"
+              : "light";
   const authorBioVariant = t.id === "silent-elegance" ? "elegant" : t.hasDarkBg ? "dark" : "light";
   const relatedVariant = t.hasDarkBg ? "dark" : "light";
+  const showComplexity = t.id === "code-blog";
 
   return `${imports.join("\n")}
 
 export default function ArticlePage({ post }: { post: Post }) {
   ${t.showToc ? "const toc = getTableOfContents(post.content);\n\n  " : ""}
   ${t.showRelated ? "const allPosts = getAllPosts().filter((p) => p.frontmatter.slug !== post.frontmatter.slug);\n  const tags = post.frontmatter.tags;\n  const relatedByTags = tags.length\n    ? allPosts.filter((p) => p.frontmatter.tags.some((tag) => tags.includes(tag)))\n    : [];\n  const related = (relatedByTags.length ? relatedByTags : allPosts).slice(0, 3);\n\n  " : ""}
+  ${t.id === "code-blog" ? "const complexity = (() => {\n    const fence = String.fromCharCode(96).repeat(3);\n    const fences = post.content.split(fence).length - 1;\n    const codeBlocks = Math.floor(fences / 2);\n    const score = codeBlocks * 2 + Math.round(post.content.length / 1200);\n    if (score <= 3) return \"Low\";\n    if (score <= 6) return \"Medium\";\n    return \"High\";\n  })();\n\n  " : ""}
   return (
     <div>
       <article>${t.showProgressBar ? "\n              <ProgressBar />" : ""}${t.showBreadcrumbs ? '\n              <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Articles", href: "/" }, { label: post.frontmatter.title }]} />' : ""}
@@ -699,11 +834,21 @@ export default function ArticlePage({ post }: { post: Post }) {
               ) : null}` : ""}
 
               <h1 className="${t.headingFont} text-4xl font-bold mb-4">{post.frontmatter.title}</h1>
+              ${t.id === "code-blog" ? `
+              <div className="flex flex-wrap items-center gap-2 text-sm mb-8">
+                <span className="opacity-60">{post.frontmatter.date}</span>
+                <span className="opacity-60">&middot;</span>
+                <span className="opacity-60">{post.frontmatter.author}</span>${t.showReadingTime ? '\n                <span className="opacity-60">&middot;</span><span className="opacity-60"><ReadingTime content={post.content} /></span>' : ""}
+                <span className="inline-flex items-center px-2 py-0.5 rounded border border-gray-700 text-yellow-300 text-xs">
+                  Complexity: {complexity}
+                </span>
+              </div>` : `
               <div className="flex items-center gap-3 text-sm opacity-60 mb-8">
                 <span>{post.frontmatter.date}</span>
                 <span>&middot;</span>
                 <span>{post.frontmatter.author}</span>${t.showReadingTime ? '\n                <span>&middot;</span><ReadingTime content={post.content} />' : ""}
-              </div>${t.showTags ? `\n              <div className="mb-6"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}${t.showToc ? `\n              <TableOfContents items={toc} variant="${tocVariant}" />` : ""}
+              </div>`}
+              ${t.showTags ? `\n              <div className="mb-6"><TagList tags={post.frontmatter.tags} variant="${tagVariant}" /></div>` : ""}${t.showToc ? `\n              <TableOfContents items={toc} variant="${tocVariant}" />` : ""}
               
               <div className="prose ${t.hasDarkBg ? "prose-invert" : ""} max-w-none ${t.bodyFont}">
                 <MarkdownRenderer source={post.content} variant="${markdownVariant}" />

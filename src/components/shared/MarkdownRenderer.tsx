@@ -2,45 +2,99 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 
-type MarkdownVariant = "light" | "dark" | "outline";
+type MarkdownVariant = "light" | "dark" | "outline" | "terminal" | "wiki" | "neon";
 
 function getComponents(variant: MarkdownVariant) {
   const blockquoteClass =
-    variant === "dark"
-      ? "border-l-4 border-white/20 pl-4 italic text-white/70 my-4"
-      : variant === "outline"
-        ? "border-l-4 border-gray-900 pl-4 italic text-gray-800 my-4"
-        : "border-l-4 border-gray-300 pl-4 italic text-gray-600 my-4";
+    variant === "terminal"
+      ? "border-l-4 border-green-900 pl-4 italic text-green-200/80 my-4"
+      : variant === "neon"
+        ? "border-l-4 border-fuchsia-700 pl-4 italic text-cyan-200/80 my-4"
+        : variant === "dark"
+          ? "border-l-4 border-white/20 pl-4 italic text-white/70 my-4"
+          : variant === "wiki"
+            ? "border-l-4 border-gray-200 pl-4 italic text-gray-700 my-4"
+            : variant === "outline"
+              ? "border-l-4 border-gray-900 pl-4 italic text-gray-800 my-4"
+              : "border-l-4 border-gray-300 pl-4 italic text-gray-600 my-4";
 
   const tableBorderClass =
-    variant === "dark" ? "border-white/15" : variant === "outline" ? "border-gray-900" : "border-gray-300";
+    variant === "terminal"
+      ? "border-green-900"
+      : variant === "neon"
+        ? "border-cyan-900"
+        : variant === "dark"
+          ? "border-white/15"
+          : variant === "wiki"
+            ? "border-gray-200"
+            : variant === "outline"
+              ? "border-gray-900"
+              : "border-gray-300";
 
   const thBgClass =
-    variant === "dark" ? "bg-white/5" : variant === "outline" ? "bg-transparent" : "bg-gray-100";
+    variant === "terminal"
+      ? "bg-black/40"
+      : variant === "neon"
+        ? "bg-black/40"
+        : variant === "dark"
+          ? "bg-white/5"
+          : variant === "wiki"
+            ? "bg-gray-50"
+            : variant === "outline"
+              ? "bg-transparent"
+              : "bg-gray-100";
 
   const preClass =
-    variant === "dark"
-      ? "bg-black/30 text-gray-100 border border-white/10"
-      : variant === "outline"
-        ? "bg-transparent text-gray-900 border border-gray-900"
-        : "bg-gray-900 text-gray-100";
+    variant === "terminal"
+      ? "bg-black/50 text-green-100 border border-green-900"
+      : variant === "neon"
+        ? "bg-black/50 text-cyan-100 border border-fuchsia-800"
+        : variant === "dark"
+          ? "bg-black/30 text-gray-100 border border-white/10"
+          : variant === "wiki"
+            ? "bg-gray-50 text-gray-900 border border-gray-200"
+            : variant === "outline"
+              ? "bg-transparent text-gray-900 border border-gray-900"
+              : "bg-gray-900 text-gray-100";
 
   const inlineCodeClass =
-    variant === "dark"
-      ? "bg-white/10 text-white border border-white/10"
-      : variant === "outline"
-        ? "bg-transparent text-gray-900 border border-gray-900"
-        : "bg-gray-100 text-pink-600";
+    variant === "terminal"
+      ? "bg-black/50 text-green-200 border border-green-900"
+      : variant === "neon"
+        ? "bg-black/50 text-fuchsia-200 border border-fuchsia-800"
+        : variant === "dark"
+          ? "bg-white/10 text-white border border-white/10"
+          : variant === "wiki"
+            ? "bg-gray-100 text-gray-900 border border-gray-200"
+            : variant === "outline"
+              ? "bg-transparent text-gray-900 border border-gray-900"
+              : "bg-gray-100 text-pink-600";
 
   const hrClass =
-    variant === "dark" ? "border-white/15" : variant === "outline" ? "border-gray-900" : "border-gray-200";
+    variant === "terminal"
+      ? "border-green-900"
+      : variant === "neon"
+        ? "border-fuchsia-800"
+        : variant === "dark"
+          ? "border-white/15"
+          : variant === "wiki"
+            ? "border-gray-200"
+            : variant === "outline"
+              ? "border-gray-900"
+              : "border-gray-200";
 
   const linkClass =
-    variant === "dark"
-      ? "text-blue-300 underline hover:text-blue-200"
-      : variant === "outline"
-        ? "text-gray-900 underline hover:text-gray-700"
-        : "text-blue-600 underline hover:text-blue-800";
+    variant === "terminal"
+      ? "text-green-200 underline hover:text-green-100"
+      : variant === "neon"
+        ? "text-cyan-300 underline hover:text-cyan-200"
+        : variant === "dark"
+          ? "text-blue-300 underline hover:text-blue-200"
+          : variant === "wiki"
+            ? "text-blue-600 underline hover:text-blue-800"
+            : variant === "outline"
+              ? "text-gray-900 underline hover:text-gray-700"
+              : "text-blue-600 underline hover:text-blue-800";
 
   return {
     h1: (props: React.ComponentProps<"h1">) => (
