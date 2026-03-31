@@ -1,11 +1,11 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";
 import { AuthorBio } from "@/components/shared/AuthorBio";
 import { NewsletterCTA } from "@/components/shared/NewsletterCTA";
 import { RelatedPosts } from "@/components/shared/RelatedPosts";
 import { getAllPosts } from "@/lib/posts";
 
-export default function ArticlePage({ post }: { post: Post }) {
+export default function ArticlePage({ post, branding }: { post: Post; branding?: Branding }) {
   const allPosts = getAllPosts().filter((p) => p.frontmatter.slug !== post.frontmatter.slug);
   const tags = post.frontmatter.tags;
   const relatedByTags = tags.length

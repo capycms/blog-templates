@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   const pageSize = 2;
   const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
   const [page, setPage] = useState(0);

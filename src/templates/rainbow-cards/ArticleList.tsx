@@ -1,4 +1,4 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 import { TagList } from "@/components/shared/TagList";
 
 const cardColors = [
@@ -9,7 +9,7 @@ const cardColors = [
   "bg-purple-50",
 ];
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   return (
     <div>
       <h1 className="font-sans text-3xl font-bold mb-8">Articles</h1>

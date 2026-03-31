@@ -1,9 +1,9 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";
 import { getTableOfContents } from "@/lib/toc";
 import { TableOfContents } from "@/components/shared/TableOfContents";
 
-export default function ArticlePage({ post }: { post: Post }) {
+export default function ArticlePage({ post, branding }: { post: Post; branding?: Branding }) {
   const toc = getTableOfContents(post.content);
 
   

@@ -31,9 +31,15 @@ export interface TemplateConfig {
   colorScheme: string;
 }
 
+export interface Branding {
+  blogName: string;
+  accentColor: string;
+  logoUrl?: string;
+}
+
 export interface TemplateModule {
   config: TemplateConfig;
-  ArticleList: React.ComponentType<{ posts: Post[] }>;
-  ArticlePage: React.ComponentType<{ post: Post }>;
-  BlogLayout: React.ComponentType<{ children: React.ReactNode }>;
+  ArticleList: React.ComponentType<{ posts: Post[]; branding?: Branding }>;
+  ArticlePage: React.ComponentType<{ post: Post; branding?: Branding }>;
+  BlogLayout: React.ComponentType<{ children: React.ReactNode; branding?: Branding }>;
 }

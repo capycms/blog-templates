@@ -1,4 +1,4 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 
 function formatMonthYear(isoDate: string) {
   const d = new Date(isoDate);
@@ -6,7 +6,7 @@ function formatMonthYear(isoDate: string) {
   return fmt.format(d);
 }
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   const entries: Array<{ type: "heading"; label: string } | { type: "post"; post: Post }> = [];
   let current = "";
 

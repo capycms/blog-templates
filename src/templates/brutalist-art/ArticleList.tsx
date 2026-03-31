@@ -1,6 +1,6 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   return (
     <div>
       <h1 className="font-mono text-4xl md:text-5xl font-black uppercase tracking-tight mb-10">

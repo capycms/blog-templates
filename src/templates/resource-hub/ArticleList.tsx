@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 import { TagList } from "@/components/shared/TagList";
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {

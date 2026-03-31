@@ -1,7 +1,7 @@
 // Auto-generated template registry — do not edit manually
 // Run: npx tsx scripts/generate-registry.ts
 
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 
 import apiDocStyleLayout from "@/templates/api-doc-style/BlogLayout";
 import apiDocStyleList from "@/templates/api-doc-style/ArticleList";
@@ -155,9 +155,9 @@ import whitespaceSerifList from "@/templates/whitespace-serif/ArticleList";
 import whitespaceSerifPage from "@/templates/whitespace-serif/ArticlePage";
 
 export interface TemplateComponents {
-  BlogLayout: React.ComponentType<{ children: React.ReactNode }>;
-  ArticleList: React.ComponentType<{ posts: Post[] }>;
-  ArticlePage: React.ComponentType<{ post: Post }>;
+  BlogLayout: React.ComponentType<{ children: React.ReactNode; branding?: Branding }>;
+  ArticleList: React.ComponentType<{ posts: Post[]; branding?: Branding }>;
+  ArticlePage: React.ComponentType<{ post: Post; branding?: Branding }>;
 }
 
 const registry: Record<string, TemplateComponents> = {

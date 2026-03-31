@@ -1,8 +1,8 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 import { MarkdownRenderer } from "@/components/shared/MarkdownRenderer";
 import { AuthorBio } from "@/components/shared/AuthorBio";
 
-export default function ArticlePage({ post }: { post: Post }) {
+export default function ArticlePage({ post, branding }: { post: Post; branding?: Branding }) {
   
   
   

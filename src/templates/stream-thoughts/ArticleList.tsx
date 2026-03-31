@@ -1,8 +1,8 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 
 const noteColors = ["bg-yellow-50", "bg-pink-50", "bg-sky-50", "bg-emerald-50"];
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   return (
     <div>
       <h1 className="font-mono text-3xl font-bold mb-8">Stream</h1>

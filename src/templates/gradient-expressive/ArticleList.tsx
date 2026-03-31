@@ -1,4 +1,4 @@
-import { Post } from "@/lib/types";
+import { Post, Branding } from "@/lib/types";
 
 const gradients = [
   "from-pink-400 to-sky-400",
@@ -6,7 +6,7 @@ const gradients = [
   "from-emerald-400 to-sky-400",
 ];
 
-export default function ArticleList({ posts }: { posts: Post[] }) {
+export default function ArticleList({ posts, branding }: { posts: Post[]; branding?: Branding }) {
   return (
     <div>
       <h1 className="font-serif text-3xl font-bold mb-8">Articles</h1>
